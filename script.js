@@ -32,28 +32,53 @@ function addition(num1, num2) {
 
 }
 
+// empty array to hold numbers as they are pressed?
+let numberArray = []
+
 // takes an operator (+, -, /, *) along with 2 numbers (the number pressed BEFORE the operator click and the number pressed AFTER the operator click)
 function operate(operator, num1, num2) {
     // console.log('operate clicked')
 
-    // console.log(numberArray)
+    // grabs the first two numbers entered from the array and put's it in it's own array
     let startingNumbers = numberArray.slice(0,2)
-    // console.log(startingNumbers)
 
     // works for addition but NOT for subtraction, multiplacation & division
-    let sum = startingNumbers.reduce((total, num) => {
-        console.log(`total: ${total}`)
-        console.log(`num: ${num}`)
+    let additionSum = startingNumbers.reduce((total, num) => {
+
+        return total + num;
+    })
+
+    console.log(`Addition sum: ${additionSum}`)
+
+    let subtractSum = startingNumbers.reduce((total, num) => {
+
         return total - num;
-    }, 0)
+    })
 
-    console.log(`sum: ${sum}`)
 
+    console.log(`Subtract sum: ${subtractSum}`)
+
+    let multiplySum = startingNumbers.reduce((total, num) => {
+
+        return total * num;
+    }, 1)
+
+    console.log(`Multiply sum: ${multiplySum}`)
+
+    let divideSum = startingNumbers.reduce((total, num) => {
+
+        if(num === 0) {
+            console.log("can NOT divide by 0")
+        } else {
+            return total / num;
+        }
+
+    })
+
+    console.log(`Divide sum: ${divideSum}`)
 
 }
 
-// empty array to hold numbers as they are pressed?
-let numberArray = []
 
 function clickingNumbers() {
     numZeroBtn.addEventListener('click', (e) => {
@@ -79,6 +104,12 @@ function clickingNumbers() {
     numThreeBtn.addEventListener('click', (e) => {
         let three = parseInt(e.target.innerText)
         numberArray.push(three)
+        
+        console.log(numberArray)
+    })
+    numFourBtn.addEventListener('click', (e) => {
+        let four = parseInt(e.target.innerText)
+        numberArray.push(four)
         
         console.log(numberArray)
     })
