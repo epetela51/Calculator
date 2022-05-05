@@ -37,7 +37,7 @@ function operate(operator, num1, num2) {
 
 }
 
-// empty array to hold numbers as they are pressed
+// empty array to hold numbers as they are pressed?
 let numberArray = []
 
 function clickingNumbers() {
