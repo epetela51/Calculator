@@ -34,6 +34,21 @@ function addition(num1, num2) {
 
 // takes an operator (+, -, /, *) along with 2 numbers (the number pressed BEFORE the operator click and the number pressed AFTER the operator click)
 function operate(operator, num1, num2) {
+    // console.log('operate clicked')
+
+    // console.log(numberArray)
+    let startingNumbers = numberArray.slice(0,2)
+    // console.log(startingNumbers)
+
+    // works for addition but NOT for subtraction, multiplacation & division
+    let sum = startingNumbers.reduce((total, num) => {
+        console.log(`total: ${total}`)
+        console.log(`num: ${num}`)
+        return total - num;
+    }, 0)
+
+    console.log(`sum: ${sum}`)
+
 
 }
 
@@ -84,7 +99,8 @@ function clickingOperators() {
     })
 
     equalsBtn.addEventListener('click', () => {
-        console.log('=')
+        // console.log('=')
+        operate()
     })
     clearBtn.addEventListener('click', () => {
         console.log('clear')
