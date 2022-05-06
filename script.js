@@ -6,6 +6,7 @@ function init () {
     clickingOperators()
 }
 
+// #region - used to hide lines of code in VS Code
 // buttons for numbers
 let numZeroBtn = document.querySelector('#zeroBtn')
 let numOneBtn = document.querySelector('#oneBtn')
@@ -25,17 +26,18 @@ let divideBtn = document.querySelector('#divideBtn')
 let multipleyBtn = document.querySelector('#multiplyBtn')
 let equalsBtn = document.querySelector('#equalsBtn')
 let clearBtn = document.querySelector('#clearBtn')
-
-
-// perform addition
-function addition(num1, num2) {
-
-}
+// #endregion
 
 // empty array to hold numbers as they are pressed?
 let numberArray = []
 // empty array that will hold the sum of 2 numbers together
 let sumArray = []
+// emptry array that will hold operators as they are clicked
+let operatorArray = []
+
+function add(...numbers) {
+
+}
 
 // takes an operator (+, -, /, *) along with 2 numbers (the number pressed BEFORE the operator click and the number pressed AFTER the operator click)
 function operate(operator, num1, num2) {
@@ -53,6 +55,7 @@ function operate(operator, num1, num2) {
         return sum;
     })
 
+    // #region
     console.log(`Addition sum: ${additionSum}`)
 
     let subtractSum = startingNumbers.reduce((total, num) => {
@@ -85,64 +88,47 @@ function operate(operator, num1, num2) {
     })
 
     console.log(`Divide sum: ${divideSum}`)
+    // #endregion
 
 }
 
 
 function clickingNumbers() {
     numZeroBtn.addEventListener('click', (e) => {
-        // var takes value from btn text and converts from string into number
-        let zero = parseInt(e.target.innerText)
-        // pushes the number from the button into an empty array
-        numberArray.push(zero)
+        // pushes number from button into array (parseInt converts it from string to number)
+        numberArray.push(parseInt(e.target.innerText))
         
         console.log(numberArray)
     })
     numOneBtn.addEventListener('click', (e) => {
-        let one = parseInt(e.target.innerText)
-        numberArray.push(one)
+        numberArray.push(parseInt(e.target.innerText))
         
         console.log(numberArray)
     })
     numTwoBtn.addEventListener('click', (e) => {
-        let two = parseInt(e.target.innerText)
-        numberArray.push(two)
+        numberArray.push(parseInt(e.target.innerText))
         
         console.log(numberArray)
     })
     numThreeBtn.addEventListener('click', (e) => {
-        let three = parseInt(e.target.innerText)
-        numberArray.push(three)
+        numberArray.push(parseInt(e.target.innerText))
         
         console.log(numberArray)
     })
     numFourBtn.addEventListener('click', (e) => {
-        let four = parseInt(e.target.innerText)
-        numberArray.push(four)
+        numberArray.push(parseInt(e.target.innerText))
         
         console.log(numberArray)
     })
 }
 
 function clickingOperators() {
-    addBtn.addEventListener('click', () => {
-        console.log('+')
+    addBtn.addEventListener('click', (e) => {
+        operatorArray.push(e.target.innerText)
     })
-    subtractBtn.addEventListener('click', () => {
-        console.log('-')
-    })
-    divideBtn.addEventListener('click', () => {
-        console.log('/')
-    })
-    multipleyBtn.addEventListener('click', () => {
-        console.log('*')
-    })
-
     equalsBtn.addEventListener('click', () => {
-        // console.log('=')
+
+
         operate()
-    })
-    clearBtn.addEventListener('click', () => {
-        console.log('clear')
     })
 }
