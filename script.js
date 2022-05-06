@@ -34,6 +34,8 @@ function addition(num1, num2) {
 
 // empty array to hold numbers as they are pressed?
 let numberArray = []
+// empty array that will hold the sum of 2 numbers together
+let sumArray = []
 
 // takes an operator (+, -, /, *) along with 2 numbers (the number pressed BEFORE the operator click and the number pressed AFTER the operator click)
 function operate(operator, num1, num2) {
@@ -42,26 +44,31 @@ function operate(operator, num1, num2) {
     // grabs the first two numbers entered from the array and put's it in it's own array
     let startingNumbers = numberArray.slice(0,2)
 
+    let sum
+
     // works for addition but NOT for subtraction, multiplacation & division
     let additionSum = startingNumbers.reduce((total, num) => {
-
-        return total + num;
+        sum = total + num;
+        sumArray.push(sum)
+        return sum;
     })
 
     console.log(`Addition sum: ${additionSum}`)
 
     let subtractSum = startingNumbers.reduce((total, num) => {
-
-        return total - num;
+        sum = total - num;
+        sumArray.push(sum)
+        return sum;
     })
-
 
     console.log(`Subtract sum: ${subtractSum}`)
 
-    let multiplySum = startingNumbers.reduce((total, num) => {
 
-        return total * num;
-    }, 1)
+    let multiplySum = startingNumbers.reduce((total, num) => {
+        sum = total * num;
+        sumArray.push(sum)
+        return sum;
+    })
 
     console.log(`Multiply sum: ${multiplySum}`)
 
@@ -70,7 +77,9 @@ function operate(operator, num1, num2) {
         if(num === 0) {
             console.log("can NOT divide by 0")
         } else {
-            return total / num;
+            sum = total / num;
+            sumArray.push(sum)
+            return sum;
         }
 
     })
