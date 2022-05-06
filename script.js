@@ -2,7 +2,8 @@
 let currentOperator = '';
 let priorOperator = '';
 let currentNumber = '';
-let priorNumber = '';
+let nextNumber = '';
+let total = '';
 
 // all the number buttons with a data attribute of 'number'
 let numberBtns = document.querySelectorAll(`[data-number]`)
