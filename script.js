@@ -1,44 +1,59 @@
-// arrays to hold button clicks
-let operatorArray = [];
+// arrays to hold numbers & operators clicked
 let numberArray = [];
+// Array is used temporarily to hold individual number clicks which will then later be joined and pushed into the numberArray
+let tempArray = []
 
 let operator = '';
 let number1 = '';
 let number2 = '';
-let total = ''
+let joinedNumber = '';
+let total = '';
 
 // all the number & operator buttons
 let numberBtns = document.querySelectorAll(`[data-number]`)
 let operatorBtns = document.querySelectorAll('[data-operators]')
+// equal btn seperate so I can have special click event to do complete calculations
 let equalsBtn = document.querySelector('#equalsBtn')
 
 // loop through all the number btns and add a click event listener to grab the number clicked
 numberBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
-        numberArray.push(parseInt(e.target.innerText))
-        console.log(`Numbers in Array: ${numberArray}`)
+        tempArray.push(parseInt(e.target.innerText))
+        console.log(`Numbers in Temp Array: ${tempArray}`)
     })
 })
 
 // loop through all the operator btns and add a click event listener to grab the operator clicked
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
-        operatorArray.push(e.target.innerText)
-        console.log(`Operators in Array: ${operatorArray}`)
+        operator = e.target.innerText
+
+        storeNumbers()
     })
 })
 
-equalsBtn.addEventListener('click', () => {
-    // grab the operator from array and remove it from the array (this will help when using multiple different operators to do math)
-    operator = operatorArray.shift()
-    console.log(`Operator: ${operator}`)
+// function that stores the numbers clicked which is used especially when there are 2+ digits per  number
+function storeNumbers() {
+    // variable to hold the new joined number (needs to be stored in a variable as join() is a non-destructive method meaning it does NOT alter the original array)
+    joinedNumber = tempArray.join('')
+    // push the new joined number into the array that holds the complete/final version of that number
+    numberArray.push(parseInt(joinedNumber))
+    // clear the temporary array so after an operator is clicked there is no carry over from the prior number
+    tempArray = []
 
-    // grab first number from array and remove it
+    console.log(`Joined Numbers: ${joinedNumber}`)
+    console.log(`Numbers in Number Array: ${numberArray}`)
+}
+
+equalsBtn.addEventListener('click', () => {
+
+    // grab first number from array and remove it since won't be needed again
     number1 = numberArray.shift()
     console.log(`Number 1: ${number1}`)
 
-    // grab second number from array and remove it
-    number2 = numberArray.shift()
+    // grab first number from array and remove it since won't be needed again
+    number2 = parseInt(tempArray.join(''))
+    tempArray = []
     console.log(`Number 2: ${number2}`)
 
     // call operate function to do math based on the operator
@@ -46,16 +61,16 @@ equalsBtn.addEventListener('click', () => {
 })
 
 function add(num1, num2) {
-    return num1 + num2
+    total = num1 + num2
+    return total;
 }
 
 // takes an operator (+, -, /, *) along with 2 numbers
 function operate(operator, num1, num2) {
     if(operator === "+") {
         console.log(`Total: ${add(num1, num2)}`)
-        return add(num1, num2)
     } else {
-        return alert("OOPS")
+        return alert("You forgot an OPERATOR")
     }
 
 }
