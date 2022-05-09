@@ -27,6 +27,7 @@ numberBtns.forEach((button) => {
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         operator = e.target.innerText
+        console.log(`Numbers in Temp Array: ${tempArray}`)
 
         storeNumbers()
     })
@@ -41,7 +42,7 @@ function storeNumbers() {
     // clear the temporary array so after an operator is clicked there is no carry over from the prior number
     tempArray = []
 
-    console.log(`Joined Numbers: ${joinedNumber}`)
+    // console.log(`Joined Numbers: ${joinedNumber}`)
     console.log(`Numbers in Number Array: ${numberArray}`)
 }
 
@@ -49,26 +50,43 @@ equalsBtn.addEventListener('click', () => {
 
     // grab first number from array and remove it since won't be needed again
     number1 = numberArray.shift()
-    console.log(`Number 1: ${number1}`)
+    // console.log(`Number 1: ${number1}`)
 
-    // grab first number from array and remove it since won't be needed again
+    // grab numbers from temp array, join them, place inside variable
     number2 = parseInt(tempArray.join(''))
     tempArray = []
-    console.log(`Number 2: ${number2}`)
+    // console.log(`Number 2: ${number2}`)
 
     // call operate function to do math based on the operator
     operate(operator, number1, number2)
 })
 
 function add(num1, num2) {
-    total = num1 + num2
+    // console.log(`Number Array: ${numberArray}`)
+    // console.log(`Num1: ${num1}`)
+    // console.log(`Num2: ${num2}`)
+    // console.log(`Starting Total: ${total}`)
+
+    if(total === "") {
+        total = num1 + num2
+        console.log('if')
+        console.log(`${total} = ${num1} + ${num2}`)
+    } else {
+        total += num2
+        console.log('else')
+        console.log(`${total} += ${num2}`)
+    }
+    
+    // total = num1 + num2
+    // console.log(`Ending Total: ${total}`)
     return total;
 }
 
 // takes an operator (+, -, /, *) along with 2 numbers
 function operate(operator, num1, num2) {
     if(operator === "+") {
-        console.log(`Total: ${add(num1, num2)}`)
+        // console.log(`Total: ${add(num1, num2)}`)
+        return add(num1, num2)
     } else {
         return alert("You forgot an OPERATOR")
     }
