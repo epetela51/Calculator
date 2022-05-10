@@ -29,7 +29,7 @@ operatorBtns.forEach((button) => {
         assignedNumbers()
 
         // get sum on operator click (in case user wants to do math on 2+ opperands before summing with =)
-        operate(operator, total, number2)
+        operate(operator, number1, number2)
 
     })
 })
@@ -42,7 +42,7 @@ function assignedNumbers() {
     // clear the temporary array so after an operator is clicked there is no carry over from the prior number
     tempArray = []
 
-    if(number1 === "" || number1 === NaN){
+    if(number1 === 0 || number1 === '' || number1 === NaN){
         number1 = parseInt(joinedNumber)
     } else {
         number2 = parseInt(joinedNumber)
@@ -55,7 +55,7 @@ equalsBtn.addEventListener('click', () => {
     assignedNumbers()
 
     // call operate function to do math based on the operator
-    operate(operator, total, number2)
+    operate(operator, number1, number2)
 })
 
 function add(num1, num2) {
