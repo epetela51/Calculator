@@ -1,92 +1,88 @@
-window.onload = init
+// Array is used temporarily to hold individual number clicks which will then later be joined and pushed into the numberArray
+let tempArray = []
 
-function init () {
-    clickingNumbers()
+let operator = '';
+let number1 = 0;
+let number2 = 0;
+let joinedNumber = 0;
+let total = 0;
 
-    clickingOperators()
-}
-
-// buttons for numbers
-let numZeroBtn = document.querySelector('#zeroBtn')
-let numOneBtn = document.querySelector('#oneBtn')
-let numTwoBtn = document.querySelector('#twoBtn')
-let numThreeBtn = document.querySelector('#threeBtn')
-let numFourBtn = document.querySelector('#fourBtn')
-let numFiveBtn = document.querySelector('#fiveBtn')
-let numSixBtn = document.querySelector('#sixBtn')
-let numSevenBtn = document.querySelector('#sevenBtn')
-let numEightBtn = document.querySelector('#eightBtn')
-let numNineBtn = document.querySelector('#nineBtn')
-
-// buttons for operators, equals & clear
-let addBtn = document.querySelector('#addBtn')
-let subtractBtn = document.querySelector('#subtractBtn')
-let divideBtn = document.querySelector('#divideBtn')
-let multipleyBtn = document.querySelector('#multiplyBtn')
+// all the number & operator buttons
+let numberBtns = document.querySelectorAll(`[data-number]`)
+let operatorBtns = document.querySelectorAll('[data-operators]')
+// equal btn seperate so I can have special click event to do complete calculations
 let equalsBtn = document.querySelector('#equalsBtn')
-let clearBtn = document.querySelector('#clearBtn')
 
+// loop through all the number btns and add a click event listener to grab the number clicked
+numberBtns.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        tempArray.push(parseInt(e.target.innerText))
+    })
+})
 
-// perform addition
-function addition(num1, num2) {
+// loop through all the operator btns and add a click event listener to grab the operator clicked
+operatorBtns.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        operator = e.target.innerText
 
+        // grab the assigned numbers
+        assignedNumbers()
+
+        // get sum on operator click (in case user wants to do math on 2+ opperands before summing with =)
+        operate(operator, total, number2)
+
+    })
+})
+
+// function that stores the numbers clicked which is important when there are 2+ digits per number
+function assignedNumbers() {
+    // variable to hold the new joined number (needs to be stored in a variable as join() is a non-destructive method meaning it does NOT alter the original array)
+    joinedNumber = tempArray.join('')
+
+    // clear the temporary array so after an operator is clicked there is no carry over from the prior number
+    tempArray = []
+
+    if(number1 === "" || number1 === NaN){
+        number1 = parseInt(joinedNumber)
+    } else {
+        number2 = parseInt(joinedNumber)
+    }
 }
 
-// takes an operator (+, -, /, *) along with 2 numbers (the number pressed BEFORE the operator click and the number pressed AFTER the operator click)
+equalsBtn.addEventListener('click', () => {
+
+    // grab all the values of the assigned numbers
+    assignedNumbers()
+
+    // call operate function to do math based on the operator
+    operate(operator, total, number2)
+})
+
+function add(num1, num2) {
+    console.log(`Starting Total: ${total}`)
+
+    if(total === 0 || total === '' || total === NaN) {
+        total = num1 + num2
+        console.log('if - add function')
+        console.log(`${total} = ${num1} + ${num2}`)
+    } else {
+        total += num2
+        console.log('else - add function')
+        console.log(`${total} += ${num2}`)
+    }
+    
+    console.log(`Ending Total: ${total}`)
+
+    return total;
+}
+
+// takes an operator (+, -, /, *) along with 2 numbers
 function operate(operator, num1, num2) {
+    if(operator === "+") {
+        // console.log(`Total: ${add(num1, num2)}`)
+        return add(num1, num2)
+    } else {
+        return alert("You forgot an OPERATOR")
+    }
 
-}
-
-// empty array to hold numbers as they are pressed
-let numberArray = []
-
-function clickingNumbers() {
-    numZeroBtn.addEventListener('click', (e) => {
-        // var takes value from btn text and converts from string into number
-        let zero = parseInt(e.target.innerText)
-        // pushes the number from the button into an empty array
-        numberArray.push(zero)
-        
-        console.log(numberArray)
-    })
-    numOneBtn.addEventListener('click', (e) => {
-        let one = parseInt(e.target.innerText)
-        numberArray.push(one)
-        
-        console.log(numberArray)
-    })
-    numTwoBtn.addEventListener('click', (e) => {
-        let two = parseInt(e.target.innerText)
-        numberArray.push(two)
-        
-        console.log(numberArray)
-    })
-    numThreeBtn.addEventListener('click', (e) => {
-        let three = parseInt(e.target.innerText)
-        numberArray.push(three)
-        
-        console.log(numberArray)
-    })
-}
-
-function clickingOperators() {
-    addBtn.addEventListener('click', () => {
-        console.log('+')
-    })
-    subtractBtn.addEventListener('click', () => {
-        console.log('-')
-    })
-    divideBtn.addEventListener('click', () => {
-        console.log('/')
-    })
-    multipleyBtn.addEventListener('click', () => {
-        console.log('*')
-    })
-
-    equalsBtn.addEventListener('click', () => {
-        console.log('=')
-    })
-    clearBtn.addEventListener('click', () => {
-        console.log('clear')
-    })
 }
