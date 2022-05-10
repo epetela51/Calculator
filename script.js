@@ -1,13 +1,11 @@
-// arrays to hold numbers & operators clicked
-let numberArray = [];
 // Array is used temporarily to hold individual number clicks which will then later be joined and pushed into the numberArray
 let tempArray = []
 
 let operator = '';
-let number1 = '';
-let number2 = '';
-let joinedNumber = '';
-let total = '';
+let number1 = 0;
+let number2 = 0;
+let joinedNumber = 0;
+let total = 0;
 
 // all the number & operator buttons
 let numberBtns = document.querySelectorAll(`[data-number]`)
@@ -19,7 +17,6 @@ let equalsBtn = document.querySelector('#equalsBtn')
 numberBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         tempArray.push(parseInt(e.target.innerText))
-        console.log(`Numbers in Temp Array: ${tempArray}`)
     })
 })
 
@@ -27,58 +24,55 @@ numberBtns.forEach((button) => {
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         operator = e.target.innerText
-        console.log(`Numbers in Temp Array: ${tempArray}`)
 
-        storeNumbers()
+        // grab the assigned numbers
+        assignedNumbers()
+
+        // get sum on operator click (in case user wants to do math on 2+ opperands before summing with =)
+        operate(operator, total, number2)
+
     })
 })
 
-// function that stores the numbers clicked which is used especially when there are 2+ digits per  number
-function storeNumbers() {
+// function that stores the numbers clicked which is important when there are 2+ digits per number
+function assignedNumbers() {
     // variable to hold the new joined number (needs to be stored in a variable as join() is a non-destructive method meaning it does NOT alter the original array)
     joinedNumber = tempArray.join('')
-    // push the new joined number into the array that holds the complete/final version of that number
-    numberArray.push(parseInt(joinedNumber))
+
     // clear the temporary array so after an operator is clicked there is no carry over from the prior number
     tempArray = []
 
-    // console.log(`Joined Numbers: ${joinedNumber}`)
-    console.log(`Numbers in Number Array: ${numberArray}`)
+    if(number1 === "" || number1 === NaN){
+        number1 = parseInt(joinedNumber)
+    } else {
+        number2 = parseInt(joinedNumber)
+    }
 }
 
 equalsBtn.addEventListener('click', () => {
 
-    // grab first number from array and remove it since won't be needed again
-    number1 = numberArray.shift()
-    // console.log(`Number 1: ${number1}`)
-
-    // grab numbers from temp array, join them, place inside variable
-    number2 = parseInt(tempArray.join(''))
-    tempArray = []
-    // console.log(`Number 2: ${number2}`)
+    // grab all the values of the assigned numbers
+    assignedNumbers()
 
     // call operate function to do math based on the operator
-    operate(operator, number1, number2)
+    operate(operator, total, number2)
 })
 
 function add(num1, num2) {
-    // console.log(`Number Array: ${numberArray}`)
-    // console.log(`Num1: ${num1}`)
-    // console.log(`Num2: ${num2}`)
-    // console.log(`Starting Total: ${total}`)
+    console.log(`Starting Total: ${total}`)
 
-    if(total === "") {
+    if(total === 0 || total === '' || total === NaN) {
         total = num1 + num2
-        console.log('if')
+        console.log('if - add function')
         console.log(`${total} = ${num1} + ${num2}`)
     } else {
         total += num2
-        console.log('else')
+        console.log('else - add function')
         console.log(`${total} += ${num2}`)
     }
     
-    // total = num1 + num2
-    // console.log(`Ending Total: ${total}`)
+    console.log(`Ending Total: ${total}`)
+
     return total;
 }
 
