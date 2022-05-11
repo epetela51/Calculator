@@ -17,6 +17,7 @@ let equalsBtn = document.querySelector('#equalsBtn')
 numberBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         tempArray.push(parseInt(e.target.innerText))
+        joinedNumber = tempArray.join('')
     })
 })
 
@@ -25,8 +26,8 @@ operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         operator = e.target.innerText
 
-        // grab the assigned numbers
-        assignedNumbers()
+        // assign to either variable number 1 or 2
+        assignNumbers()
 
         // get sum on operator click (in case user wants to do math on 2+ opperands before summing with =)
         operate(operator, number1, number2)
@@ -34,27 +35,27 @@ operatorBtns.forEach((button) => {
     })
 })
 
-// function that stores the numbers clicked which is important when there are 2+ digits per number
-function assignedNumbers() {
-    // variable to hold the new joined number (needs to be stored in a variable as join() is a non-destructive method meaning it does NOT alter the original array)
-    joinedNumber = tempArray.join('')
-
-    // clear the temporary array so after an operator is clicked there is no carry over from the prior number
-    tempArray = []
+// function that assigns a number to either number 1 or 2
+function assignNumbers() {
 
     if(number1 === 0 || number1 === '' || number1 === NaN){
         number1 = parseInt(joinedNumber)
+        // reset the temp array and the joined number.  This is important for when user clicks = btn and then wants to click operator button immediately after to do calculation on the total (i.e. 1+2=3+1)
+        tempArray = []
+        joinedNumber = 0;
+        console.log(`Number1: ${number1}`)
     } else {
         number2 = parseInt(joinedNumber)
+        tempArray = []
+        joinedNumber = 0;
+        console.log(`Number2: ${number2}`)
     }
 }
 
 equalsBtn.addEventListener('click', () => {
+    
+    assignNumbers(joinedNumber)
 
-    // grab all the values of the assigned numbers
-    assignedNumbers()
-
-    // call operate function to do math based on the operator
     operate(operator, number1, number2)
 })
 
@@ -63,11 +64,11 @@ function add(num1, num2) {
 
     if(total === 0 || total === '' || total === NaN) {
         total = num1 + num2
-        console.log('if - add function')
+        console.log('if')
         console.log(`${total} = ${num1} + ${num2}`)
     } else {
         total += num2
-        console.log('else - add function')
+        console.log('else')
         console.log(`${total} += ${num2}`)
     }
     
