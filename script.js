@@ -25,6 +25,7 @@ numberBtns.forEach((button) => {
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         operator = e.target.innerText
+        console.log(operator)
 
         // assign to either variable number 1 or 2
         assignNumbers()
@@ -77,11 +78,31 @@ function add(num1, num2) {
     return total;
 }
 
+function subtract(num1, num2) {
+    console.log(`Starting Total: ${total}`)
+
+    if(total === 0 || total === '' || total === NaN) {
+        total = num1 - num2
+        console.log('if')
+        console.log(`${total} = ${num1} - ${num2}`)
+    } else {
+        total -= num2
+        console.log('else')
+        console.log(`${total} -= ${num2}`)
+    }
+    
+    console.log(`Ending Total: ${total}`)
+
+    return total;
+}
+
 // takes an operator (+, -, /, *) along with 2 numbers
 function operate(operator, num1, num2) {
     if(operator === "+") {
         // console.log(`Total: ${add(num1, num2)}`)
         return add(num1, num2)
+    } else if (operator === "-") {
+        return subtract(num1, num2)
     } else {
         return alert("You forgot an OPERATOR")
     }
