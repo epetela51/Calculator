@@ -18,7 +18,6 @@ let equalsBtn = document.querySelector('#equalsBtn')
 numberBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         tempArray.push(parseInt(e.target.innerText))
-        // joinedNumber = tempArray.join('')
 
         assignNumbers()
     })
@@ -31,32 +30,20 @@ operatorBtns.forEach((button) => {
 
         operatorClicked = true;
 
-        // assign to either variable number 1 or 2
-        // assignNumbers()
-
         tempArray = []
 
-        // get sum on operator click (in case user wants to do math on 2+ opperands before summing with =)
-        // operate(operator, number1, number2)
+        // determines if you are passing the existing total or number1 in the operate function
+        if(total !== 0) {
+            operate(operator, total, number2)
+        } else (
+            operate(operator, number1, number2)
+        )
 
     })
 })
 
 // function that assigns a number to either number 1 or 2
 function assignNumbers() {
-
-    // if(number1 === 0){
-    //     number1 = parseInt(joinedNumber)
-    //     // reset the temp array and the joined number.  This is important for when user clicks = btn and then wants to click operator button immediately after to do calculation on the total (i.e. 1+2=3+1)
-    //     tempArray = []
-    //     joinedNumber = 0;
-    //     console.log(`Number1: ${number1}`)
-    // } else {
-    //     number2 = parseInt(joinedNumber)
-    //     tempArray = []
-    //     joinedNumber = 0;
-    //     console.log(`Number2: ${number2}`)
-    // }
 
     if (operatorClicked === false) {
         number1 = parseInt(tempArray.join(''))
@@ -69,13 +56,16 @@ function assignNumbers() {
 
 equalsBtn.addEventListener('click', () => {
     
-    assignNumbers()
+    tempArray = []
 
-    // operate(operator, number1, number2)
+    operate(operator, number1, number2)
+
+    // reset number1 & 2 back to zero so when clicking an operator immediately after equal it doesn't do incorrect math from previously held numbers
+    number1 = 0;
+    number2 = 0;
 })
 
 function add(num1, num2) {
-    // console.log(`Starting Total: ${total}`)
 
     if(total === 0) {
         total = num1 + num2
@@ -87,13 +77,10 @@ function add(num1, num2) {
         console.log(`${total} += ${num2}`)
     }
     
-    // console.log(`Ending Total: ${total}`)
-
     return total;
 }
 
 function subtract(num1, num2) {
-    console.log(`Starting Total: ${total}`)
 
     if(total === 0) {
         total = num1 - num2
@@ -101,12 +88,11 @@ function subtract(num1, num2) {
         console.log(`${total} = ${num1} - ${num2}`)
     } else {
         total -= num2
+        number1 = 0;
         console.log('else')
         console.log(`${total} -= ${num2}`)
     }
     
-    console.log(`Ending Total: ${total}`)
-
     return total;
 }
 
