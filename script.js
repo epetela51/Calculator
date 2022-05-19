@@ -1,10 +1,11 @@
 // Array is used temporarily to hold individual number clicks which will then later be joined and pushed into the numberArray
 let tempArray = []
+let operatorArray = []
 
 let operator = '';
+let previousOperator = '';
 let number1 = 0;
 let number2 = 0;
-let joinedNumber = 0;
 let total = 0;
 let operatorClicked = false;
 
@@ -26,18 +27,38 @@ numberBtns.forEach((button) => {
 // loop through all the operator btns and add a click event listener to grab the operator clicked
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
-        operator = e.target.innerText
+
+        operatorArray.push(e.target.innerText)
+
+        // assigns the values for the current & previous operators
+        if(operator == '') {
+            operator = operatorArray.shift()
+            console.log(`Current: ${operator}`)
+            console.log(`Previous: ${previousOperator}`)
+        } else {
+            previousOperator = operator
+            operator = operatorArray.shift()
+            console.log(`Previous: ${previousOperator}`)
+            console.log(`Current: ${operator}`)
+        }
 
         operatorClicked = true;
 
         tempArray = []
 
-        // determines if you are passing the existing total or number1 in the operate function
-        if(total !== 0) {
-            operate(operator, total, number2)
-        } else (
-            operate(operator, number1, number2)
-        )
+        // looks to see which operator to the operate function depending if it's the same operator clicked 2 times in a row or if it's a different operator clicked than  last time
+        // this resolves the issue when you do something like 1+2+3-4
+        if (previousOperator == '' || operator == previousOperator) {
+            if (total !== 0) {
+                operate(operator, total, number2)
+            } else {
+                operate(operator, number1, number2)
+            }
+        // if the current operator clicked does NOT match the previous operator clicked
+        } else {
+            // use the previously clicked operator to correctly complete the math function and store it in the total variable to be used later
+            operate(previousOperator, total, number2)
+        }
 
     })
 })
@@ -69,11 +90,10 @@ function add(num1, num2) {
 
     if(total === 0) {
         total = num1 + num2
-        console.log('if')
-        console.log(`${total} = ${num1} + ${num2}`)
+        console.log(`${num1} + ${num2} = ${total}`)
     } else {
         total += num2
-        console.log('else')
+        number1 = 0;
         console.log(`${total} += ${num2}`)
     }
     
@@ -84,12 +104,10 @@ function subtract(num1, num2) {
 
     if(total === 0) {
         total = num1 - num2
-        console.log('if')
-        console.log(`${total} = ${num1} - ${num2}`)
+        console.log(`${num1} - ${num2} = ${total}`)
     } else {
         total -= num2
         number1 = 0;
-        console.log('else')
         console.log(`${total} -= ${num2}`)
     }
     
