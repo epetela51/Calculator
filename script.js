@@ -79,7 +79,13 @@ equalsBtn.addEventListener('click', () => {
     
     tempArray = []
 
-    operate(operator, number1, number2)
+    if (total !== 0) {
+        operate(operator, total, number2)
+    } else {
+        operate(operator, number1, number2)
+    }
+
+    // operate(operator, number1, number2)
 
     // reset number1 & 2 back to zero so when clicking an operator immediately after equal it doesn't do incorrect math from previously held numbers
     number1 = 0;
@@ -88,28 +94,16 @@ equalsBtn.addEventListener('click', () => {
 
 function add(num1, num2) {
 
-    if(total === 0) {
-        total = num1 + num2
-        console.log(`${num1} + ${num2} = ${total}`)
-    } else {
-        total += num2
-        number1 = 0;
-        console.log(`${total} += ${num2}`)
-    }
+    total = num1 + num2
+    console.log(`${num1} + ${num2} = ${total}`)
     
     return total;
 }
 
 function subtract(num1, num2) {
 
-    if(total === 0) {
-        total = num1 - num2
-        console.log(`${num1} - ${num2} = ${total}`)
-    } else {
-        total -= num2
-        number1 = 0;
-        console.log(`${total} -= ${num2}`)
-    }
+    total = num1 - num2
+    console.log(`${num1} - ${num2} = ${total}`)
     
     return total;
 }
