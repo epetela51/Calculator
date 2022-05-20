@@ -38,8 +38,8 @@ operatorBtns.forEach((button) => {
         } else {
             previousOperator = operator
             operator = operatorArray.shift()
-            console.log(`Previous: ${previousOperator}`)
             console.log(`Current: ${operator}`)
+            console.log(`Previous: ${previousOperator}`)
         }
 
         operatorClicked = true;
@@ -48,16 +48,23 @@ operatorBtns.forEach((button) => {
 
         // looks to see which operator to the operate function depending if it's the same operator clicked 2 times in a row or if it's a different operator clicked than  last time
         // this resolves the issue when you do something like 1+2+3-4
-        if (previousOperator == '' || operator == previousOperator) {
-            if (total !== 0) {
+        if (total !== 0) {
+            if (previousOperator == '' || operator == previousOperator) {
+                // used for when hitting = before and setting number to 0, if it's multiplacation and we multiply by 0 we get a total of 0 so we need to set number2 value to 1 to avoid a number2 value of 0
+                if (previousOperator == '*' && number2 == 0) {
+                    number1 = 0;
+                    number2 = 1;
+                    operate(operator, total, number2)
+                } else {
+                    operate(operator, total, number2)
+                }
+            } else if (previousOperator == '*' && number2 == 0) {
                 operate(operator, total, number2)
             } else {
-                operate(operator, number1, number2)
+                operate(previousOperator, total, number2)
             }
-        // if the current operator clicked does NOT match the previous operator clicked
         } else {
-            // use the previously clicked operator to correctly complete the math function and store it in the total variable to be used later
-            operate(previousOperator, total, number2)
+            operate(operator, number1, number2)
         }
 
     })
@@ -93,19 +100,21 @@ equalsBtn.addEventListener('click', () => {
 })
 
 function add(num1, num2) {
-
     total = num1 + num2
     console.log(`${num1} + ${num2} = ${total}`)
-    
     return total;
 }
 
 function subtract(num1, num2) {
-
     total = num1 - num2
     console.log(`${num1} - ${num2} = ${total}`)
-    
     return total;
+}
+
+function multiply(num1, num2) {
+    total = num1 * num2
+    console.log(`${num1} * ${num2} = ${total}`)
+    return total
 }
 
 // takes an operator (+, -, /, *) along with 2 numbers
@@ -114,6 +123,8 @@ function operate(operator, num1, num2) {
         add(num1, num2)
     } else if (operator === "-") {
         subtract(num1, num2)
+    } else if (operator === "*") {
+        multiply(num1, num2)
     } else {
         return alert("You forgot an OPERATOR")
     }
