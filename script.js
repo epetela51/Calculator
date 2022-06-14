@@ -1,4 +1,4 @@
-// Array is used temporarily to hold individual number clicks which will then later be joined and pushed into the numberArray
+// tempArray is used temporarily to hold individual number clicks which will then later be joined to create multi-digit numbers
 let tempArray = []
 let operatorArray = []
 
@@ -46,23 +46,28 @@ operatorBtns.forEach((button) => {
 
         tempArray = []
 
-        // looks to see which operator to the operate function depending if it's the same operator clicked 2 times in a row or if it's a different operator clicked than  last time
+        // looks to see which operator to use on the operate function depending if it's the same operator clicked 2 times in a row or if it's a different operator clicked than last time
         // this resolves the issue when you do something like 1+2+3-4
         if (total !== 0) {
             if (previousOperator == '' || operator == previousOperator) {
-                // used for when hitting = before and setting number to 0, if it's multiplacation and we multiply by 0 we get a total of 0 so we need to set number2 value to 1 to avoid a number2 value of 0
-                if (previousOperator == '*' && number2 == 0) {
+                // used for when multiplying or dividing AFTER hitting =.  Need to pass the second number with a value of 1 so that you are not multiplying or dividing by 0.  This way you are multiplying or dividing by 1 (i.e 4+4 = 8 then doing * 2 so it would be 8*1 = 8 and then 8*2 = 16)
+                if ((previousOperator == '*' || previousOperator == '/') && number2 == 0) {
                     number1 = 0;
-                    number2 = 1;
-                    operate(operator, total, number2)
+                    operate(operator, total, 1)
                 } else {
                     operate(operator, total, number2)
                 }
+            // for scenarios when the prior equation is * and then doing division and avoiding the second number being 0 and getting an 'infinity' result which can't be used.  This way we pass 1 as the second number to keep the equation good moving forward (i.e. 4*4 = 16 and then if you do / you are doing 16/1 opposed to 16/0 which yeilds infinity)
+            } else if (previousOperator == '*' && operator == "/" && number2 == 0) {
+                operate(operator, total, 1)
             } else if (previousOperator == '*' && number2 == 0) {
                 operate(operator, total, number2)
             } else {
                 operate(previousOperator, total, number2)
             }
+        // this is to avoid dividing by 0 if you are doing division or multiplcation first by passing 1 instead of 0.  If you divide and pass 0 then you get 'infinity'.  i.e. 4*1 = 4 opposed to 4*0 = 0
+        } else if ((operator === "/" || operator === "*") && number2 == 0) {
+            operate(operator, number1, 1)
         } else {
             operate(operator, number1, number2)
         }
@@ -117,6 +122,12 @@ function multiply(num1, num2) {
     return total
 }
 
+function divide(num1, num2) {
+    total = num1 / num2
+    console.log(`${num1} / ${num2} = ${total}`)
+    return total;
+}
+
 // takes an operator (+, -, /, *) along with 2 numbers
 function operate(operator, num1, num2) {
     if(operator === "+") {
@@ -125,6 +136,8 @@ function operate(operator, num1, num2) {
         subtract(num1, num2)
     } else if (operator === "*") {
         multiply(num1, num2)
+    } else if (operator === "/") {
+        divide(num1, num2)
     } else {
         return alert("You forgot an OPERATOR")
     }
