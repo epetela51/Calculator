@@ -24,28 +24,73 @@ numberBtns.forEach((button) => {
     })
 })
 
+function testOperators() {
+    
+}
+
+function assignOperators() {
+    // assigns the values for the current & previous operators
+    if(operator == '') {
+        operator = operatorArray.shift()
+        console.log(`Current: ${operator}`)
+        console.log(`Previous: ${previousOperator}`)
+    } else {
+        previousOperator = operator
+        operator = operatorArray.shift()
+        console.log(`Current: ${operator}`)
+        console.log(`Previous: ${previousOperator}`)
+    }
+}
+
 // loop through all the operator btns and add a click event listener to grab the operator clicked
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
 
         operatorArray.push(e.target.innerText)
 
-        // assigns the values for the current & previous operators
-        if(operator == '') {
-            operator = operatorArray.shift()
-            console.log(`Current: ${operator}`)
-            console.log(`Previous: ${previousOperator}`)
-        } else {
-            previousOperator = operator
-            operator = operatorArray.shift()
-            console.log(`Current: ${operator}`)
-            console.log(`Previous: ${previousOperator}`)
-        }
+        assignOperators()
+
+        // // assigns the values for the current & previous operators
+        // if(operator == '') {
+        //     operator = operatorArray.shift()
+        //     console.log(`Current: ${operator}`)
+        //     console.log(`Previous: ${previousOperator}`)
+        // } else {
+        //     previousOperator = operator
+        //     operator = operatorArray.shift()
+        //     console.log(`Current: ${operator}`)
+        //     console.log(`Previous: ${previousOperator}`)
+        // }
 
         operatorClicked = true;
 
         tempArray = []
 
+        if (previousOperator == '=') {
+            console.log(`DO NOTHING, = was clicked prior`)
+        } else if (previousOperator !== "") {
+            console.log(`SUCCESS: Previous Operator is ${previousOperator}`)
+            operate(operator, number1, number2)
+        } else {
+            console.log(`No Previous Operator`)
+        }
+
+    })
+})
+
+// function that assigns a number to either number 1 or 2
+function assignNumbers() {
+
+    if (operatorClicked === false) {
+        number1 = parseInt(tempArray.join(''))
+        console.log(`Number1: ${number1}`)
+    } else {
+        number2 = parseInt(tempArray.join(''))
+        console.log(`Number2: ${number2}`)
+    }
+}
+
+function doMath() {
         // looks to see which operator to use on the operate function depending if it's the same operator clicked 2 times in a row or if it's a different operator clicked than last time
         // this resolves the issue when you do something like 1+2+3-4
         if (total !== 0) {
@@ -71,41 +116,34 @@ operatorBtns.forEach((button) => {
         } else {
             operate(operator, number1, number2)
         }
-
-    })
-})
-
-// function that assigns a number to either number 1 or 2
-function assignNumbers() {
-
-    if (operatorClicked === false) {
-        number1 = parseInt(tempArray.join(''))
-        console.log(`Number1: ${number1}`)
-    } else {
-        number2 = parseInt(tempArray.join(''))
-        console.log(`Number2: ${number2}`)
-    }
 }
 
-equalsBtn.addEventListener('click', () => {
+equalsBtn.addEventListener('click', (e) => {
     
     tempArray = []
 
-    if (total !== 0) {
-        operate(operator, total, number2)
-    } else {
-        operate(operator, number1, number2)
-    }
+    operatorArray.push(e.target.innerText)
 
-    // operate(operator, number1, number2)
+    console.log(operatorArray)
+
+    assignOperators()
+
+    operate(previousOperator, number1, number2)
+
+    // if (total !== 0) {
+    //     operate(operator, total, number2)
+    // } else {
+    //     operate(operator, number1, number2)
+    // }
 
     // reset number1 & 2 back to zero so when clicking an operator immediately after equal it doesn't do incorrect math from previously held numbers
-    number1 = 0;
-    number2 = 0;
+    // number1 = 0;
+    // number2 = 0;
 })
 
 function add(num1, num2) {
     total = num1 + num2
+    number1 = total
     console.log(`${num1} + ${num2} = ${total}`)
     return total;
 }
@@ -138,8 +176,10 @@ function operate(operator, num1, num2) {
         multiply(num1, num2)
     } else if (operator === "/") {
         divide(num1, num2)
+    } else if (operator === "=") {
+        console.log(`= clicked again`)
     } else {
-        return alert("You forgot an OPERATOR")
+        console.log("OOPS dum dum")
     }
 
 }
