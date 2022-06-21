@@ -24,7 +24,7 @@ numberBtns.forEach((button) => {
     })
 })
 
-function testOperators() {
+function assignOperators() {
 
     // this is used to grab the second to last operator clicked so when clicking on an operator math will be done ONLY using the second to last operator clicked (i.e. 1+2-3.  On the - click math will be done for 1+2 since + was the second to last operator clicked)
     operator = operatorArray[operatorArray.length-2]
@@ -47,30 +47,13 @@ function testOperators() {
     operatorArray.reverse()
 }
 
-/*
-function assignOperators() {
-    // assigns the values for the current & previous operators
-    if(operator == '') {
-        operator = operatorArray.shift()
-        console.log(`Current: ${operator}`)
-        console.log(`Previous: ${previousOperator}`)
-    } else {
-        previousOperator = operator
-        operator = operatorArray.shift()
-        console.log(`Current: ${operator}`)
-        console.log(`Previous: ${previousOperator}`)
-    }
-}
-*/
-
 // loop through all the operator btns and add a click event listener to grab the operator clicked
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
 
         operatorArray.push(e.target.innerText)
 
-        testOperators()
-        // assignOperators()
+        assignOperators()
 
         operatorClicked = true;
 
@@ -97,27 +80,15 @@ equalsBtn.addEventListener('click', (e) => {
 
     operatorArray.push(e.target.innerText)
 
-    // console.log(operatorArray)
+    assignOperators()
 
-    testOperators()
+    operate(lastOperatorThatIsNotEqual, number1, number2)
 
-    // assignOperators()
-
-    // operate(previousOperator, number1, number2)
-
-    // if (total !== 0) {
-    //     operate(operator, total, number2)
-    // } else {
-    //     operate(operator, number1, number2)
-    // }
-
-    // reset number1 & 2 back to zero so when clicking an operator immediately after equal it doesn't do incorrect math from previously held numbers
-    // number1 = 0;
-    // number2 = 0;
 })
 
 function add(num1, num2) {
     total = num1 + num2
+    // assign number1 the value of total so it can be used for continous mathimatical equations being done consecutively 
     number1 = total
     console.log(`${num1} + ${num2} = ${total}`)
     return total;
@@ -125,18 +96,21 @@ function add(num1, num2) {
 
 function subtract(num1, num2) {
     total = num1 - num2
+    number1 = total
     console.log(`${num1} - ${num2} = ${total}`)
     return total;
 }
 
 function multiply(num1, num2) {
     total = num1 * num2
+    number1 = total
     console.log(`${num1} * ${num2} = ${total}`)
     return total
 }
 
 function divide(num1, num2) {
     total = num1 / num2
+    number1 = total
     console.log(`${num1} / ${num2} = ${total}`)
     return total;
 }
@@ -151,8 +125,6 @@ function operate(operator, num1, num2) {
         multiply(num1, num2)
     } else if (operator === "/") {
         divide(num1, num2)
-    } else if (operator === "=") {
-        console.log(`= clicked again`)
     } else {
         console.log("OOPS dum dum")
     }
