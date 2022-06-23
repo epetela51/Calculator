@@ -3,7 +3,7 @@ let tempArray = []
 let operatorArray = []
 
 let operator = '';
-let previousOperator = '';
+let lastOperatorThatIsNotEqual = '';
 let number1 = 0;
 let number2 = 0;
 let total = 0;
@@ -24,56 +24,28 @@ numberBtns.forEach((button) => {
     })
 })
 
-// loop through all the operator btns and add a click event listener to grab the operator clicked
-operatorBtns.forEach((button) => {
-    button.addEventListener('click', (e) => {
+function assignOperators() {
 
-        operatorArray.push(e.target.innerText)
+    // this is used to grab the second to last operator clicked so when clicking on an operator math will be done ONLY using the second to last operator clicked (i.e. 1+2-3.  On the - click math will be done for 1+2 since + was the second to last operator clicked)
+    operator = operatorArray[operatorArray.length-2]
+    console.log(`Second to Last Click: ${operator}`)
+    // if you look at the operator array here you will see it in the order you clicked operators because it becomes BEFORE the reverse method
+    console.log(operatorArray)
 
-        // assigns the values for the current & previous operators
-        if(operator == '') {
-            operator = operatorArray.shift()
-            console.log(`Current: ${operator}`)
-            console.log(`Previous: ${previousOperator}`)
-        } else {
-            previousOperator = operator
-            operator = operatorArray.shift()
-            console.log(`Current: ${operator}`)
-            console.log(`Previous: ${previousOperator}`)
-        }
+    // IMPORTANT: this is needed when doing consecutive = clicks.  If you just use the operator variable then after the second = click you will just get = as the previous operator and no math will be done.  This will grab the last operator that was clicked that is NOT =
+    // the reverse method reverses the order of the array so the end goes to the front, etc.. so now when you go to find something even though it's still starting at the front it is "technically" the end of the array just reversed
+    lastOperatorThatIsNotEqual = operatorArray.reverse().find(e => e !== "=")
+    // if you look at the operator array here you will see it reversed because it comes after the reverse method
+    console.log(operatorArray)
+    console.log(`Previous Operator NOT = : ${lastOperatorThatIsNotEqual}`)
 
-        operatorClicked = true;
-
-        tempArray = []
-
-        // looks to see which operator to use on the operate function depending if it's the same operator clicked 2 times in a row or if it's a different operator clicked than last time
-        // this resolves the issue when you do something like 1+2+3-4
-        if (total !== 0) {
-            if (previousOperator == '' || operator == previousOperator) {
-                // used for when multiplying or dividing AFTER hitting =.  Need to pass the second number with a value of 1 so that you are not multiplying or dividing by 0.  This way you are multiplying or dividing by 1 (i.e 4+4 = 8 then doing * 2 so it would be 8*1 = 8 and then 8*2 = 16)
-                if ((previousOperator == '*' || previousOperator == '/') && number2 == 0) {
-                    number1 = 0;
-                    operate(operator, total, 1)
-                } else {
-                    operate(operator, total, number2)
-                }
-            // for scenarios when the prior equation is * and then doing division and avoiding the second number being 0 and getting an 'infinity' result which can't be used.  This way we pass 1 as the second number to keep the equation good moving forward (i.e. 4*4 = 16 and then if you do / you are doing 16/1 opposed to 16/0 which yeilds infinity)
-            } else if (previousOperator == '*' && operator == "/" && number2 == 0) {
-                operate(operator, total, 1)
-            } else if (previousOperator == '*' && number2 == 0) {
-                operate(operator, total, number2)
-            } else {
-                operate(previousOperator, total, number2)
-            }
-        // this is to avoid dividing by 0 if you are doing division or multiplcation first by passing 1 instead of 0.  If you divide and pass 0 then you get 'infinity'.  i.e. 4*1 = 4 opposed to 4*0 = 0
-        } else if ((operator === "/" || operator === "*") && number2 == 0) {
-            operate(operator, number1, 1)
-        } else {
-            operate(operator, number1, number2)
-        }
-
-    })
-})
+    // the below reverse method reverses the array back to the original order.  This prevents the array from starting in reverse order which prevents further issues
+    // example: 
+    // Array order to start: + = -
+    // first reverse order: - = +
+    // second reverse (puts it back to the original starting array order): + = -
+    operatorArray.reverse()
+}
 
 // function that assigns a number to either number 1 or 2
 function assignNumbers() {
@@ -87,43 +59,60 @@ function assignNumbers() {
     }
 }
 
-equalsBtn.addEventListener('click', () => {
+// loop through all the operator btns and add a click event listener to grab the operator clicked
+operatorBtns.forEach((button) => {
+    button.addEventListener('click', (e) => {
+
+        operatorArray.push(e.target.innerText)
+
+        assignOperators()
+
+        operate(operator, number1, number2)
+
+        operatorClicked = true;
+
+        tempArray = []
+
+    })
+})
+
+equalsBtn.addEventListener('click', (e) => {
     
     tempArray = []
 
-    if (total !== 0) {
-        operate(operator, total, number2)
-    } else {
-        operate(operator, number1, number2)
-    }
+    operatorArray.push(e.target.innerText)
 
-    // operate(operator, number1, number2)
+    assignOperators()
 
-    // reset number1 & 2 back to zero so when clicking an operator immediately after equal it doesn't do incorrect math from previously held numbers
-    number1 = 0;
-    number2 = 0;
+    operate(lastOperatorThatIsNotEqual, number1, number2)
+
 })
 
 function add(num1, num2) {
     total = num1 + num2
+    // assign number1 the value of total so it can be used for continous mathimatical equations being done consecutively 
+    number1 = total
     console.log(`${num1} + ${num2} = ${total}`)
     return total;
 }
 
 function subtract(num1, num2) {
     total = num1 - num2
+    number1 = total
     console.log(`${num1} - ${num2} = ${total}`)
     return total;
 }
 
 function multiply(num1, num2) {
     total = num1 * num2
+    number1 = total
     console.log(`${num1} * ${num2} = ${total}`)
     return total
 }
 
 function divide(num1, num2) {
     total = num1 / num2
+    number1 = total
     console.log(`${num1} / ${num2} = ${total}`)
     return total;
 }
@@ -139,7 +128,7 @@ function operate(operator, num1, num2) {
     } else if (operator === "/") {
         divide(num1, num2)
     } else {
-        return alert("You forgot an OPERATOR")
+        console.log("OOPS dum dum")
     }
 
 }
