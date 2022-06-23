@@ -47,21 +47,6 @@ function assignOperators() {
     operatorArray.reverse()
 }
 
-// loop through all the operator btns and add a click event listener to grab the operator clicked
-operatorBtns.forEach((button) => {
-    button.addEventListener('click', (e) => {
-
-        operatorArray.push(e.target.innerText)
-
-        assignOperators()
-
-        operatorClicked = true;
-
-        tempArray = []
-
-    })
-})
-
 // function that assigns a number to either number 1 or 2
 function assignNumbers() {
 
@@ -73,6 +58,23 @@ function assignNumbers() {
         console.log(`Number2: ${number2}`)
     }
 }
+
+// loop through all the operator btns and add a click event listener to grab the operator clicked
+operatorBtns.forEach((button) => {
+    button.addEventListener('click', (e) => {
+
+        operatorArray.push(e.target.innerText)
+
+        assignOperators()
+
+        operate(operator, number1, number2)
+
+        operatorClicked = true;
+
+        tempArray = []
+
+    })
+})
 
 equalsBtn.addEventListener('click', (e) => {
     
