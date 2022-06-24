@@ -126,7 +126,15 @@ function operate(operator, num1, num2) {
     } else if (operator === "*") {
         multiply(num1, num2)
     } else if (operator === "/") {
-        divide(num1, num2)
+        if(num2 === 0) {
+            console.log("CAN'T DIVIDE BY 0 DUMMY")
+            // disables the # & operator btns because can't divide by 0
+            // since numberBtns is querySelectorAll we need to loop through each btn with a forEach and have it be disabled for each button
+            numberBtns.forEach((button) => {button.disabled = true})
+            operatorBtns.forEach((button) => {button.disabled = true})
+        } else {
+            divide(num1, num2)
+        }
     } else {
         console.log("OOPS dum dum")
     }
