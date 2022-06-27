@@ -13,7 +13,11 @@ let operatorClicked = false;
 let numberBtns = document.querySelectorAll(`[data-number]`)
 let operatorBtns = document.querySelectorAll('[data-operators]')
 // equal btn seperate so I can have special click event to do complete calculations
-let equalsBtn = document.querySelector('#equalsBtn')
+
+// don't need to use querySelectorAll since there are not multiple items being selected
+let equalsBtn = document.getElementById('equalsBtn')
+let clearBtn = document.getElementById('clearBtn')
+
 
 // loop through all the number btns and add a click event listener to grab the number clicked
 numberBtns.forEach((button) => {
@@ -88,6 +92,22 @@ equalsBtn.addEventListener('click', (e) => {
 
 })
 
+clearBtn.addEventListener('click', (e) => {
+    tempArray = [];
+    operatorArray = [];
+    number1 = 0;
+    number2 = 0;
+    total = 0;
+    operator = '';
+    lastOperatorThatIsNotEqual = '';
+    operatorClicked = false;
+    numberBtns.forEach((button) => {button.disabled = false})
+    operatorBtns.forEach((button) => {button.disabled = false})
+    equalsBtn.disabled = false;
+
+    console.log('CLEARED')
+})
+
 function add(num1, num2) {
     total = num1 + num2
     // assign number1 the value of total so it can be used for continous mathimatical equations being done consecutively 
@@ -132,11 +152,13 @@ function operate(operator, num1, num2) {
             // since numberBtns is querySelectorAll we need to loop through each btn with a forEach and have it be disabled for each button
             numberBtns.forEach((button) => {button.disabled = true})
             operatorBtns.forEach((button) => {button.disabled = true})
+            // don't need a forEach since we aren't looping multiples
+            equalsBtn.disabled = true;
         } else {
             divide(num1, num2)
         }
     } else {
-        console.log("OOPS dum dum")
+        console.log("OOPS something went wrong")
     }
 
 }
