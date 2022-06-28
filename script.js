@@ -1,5 +1,5 @@
-// tempArray is used temporarily to hold individual number clicks which will then later be joined to create multi-digit numbers
-let tempArray = []
+// numberArray is used temporarily to hold individual number clicks which will then later be joined to create multi-digit numbers
+let numberArray = []
 let operatorArray = []
 
 let operator = '';
@@ -12,17 +12,17 @@ let operatorClicked = false;
 // all the number & operator buttons
 let numberBtns = document.querySelectorAll(`[data-number]`)
 let operatorBtns = document.querySelectorAll('[data-operators]')
-// equal btn seperate so I can have special click event to do complete calculations
 
 // don't need to use querySelectorAll since there are not multiple items being selected
-let equalsBtn = document.getElementById('equalsBtn')
-let clearBtn = document.getElementById('clearBtn')
+let equalsBtn = document.querySelector('#equalsBtn')
+let clearBtn = document.querySelector('#clearBtn')
+let deleteBtn = document.querySelector('#deleteBtn')
 
 
-// loop through all the number btns and add a click event listener to grab the number clicked
+// loop through all the number btns and add a click event listener to grab the number clicked, push it into the array and assign a value to a number1 or number2 variable
 numberBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
-        tempArray.push(parseInt(e.target.innerText))
+        numberArray.push(parseInt(e.target.innerText))
 
         assignNumbers()
     })
@@ -51,19 +51,19 @@ function assignOperators() {
     operatorArray.reverse()
 }
 
-// function that assigns a number to either number 1 or 2
+// function that assigns a number to either number1 or number2 variables
 function assignNumbers() {
 
     if (operatorClicked === false) {
-        number1 = parseInt(tempArray.join(''))
+        number1 = parseInt(numberArray.join(''))
         console.log(`Number1: ${number1}`)
     } else {
-        number2 = parseInt(tempArray.join(''))
+        number2 = parseInt(numberArray.join(''))
         console.log(`Number2: ${number2}`)
     }
 }
 
-// loop through all the operator btns and add a click event listener to grab the operator clicked
+// loop through all the operator btns and record operators that are clicked
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
 
@@ -73,27 +73,30 @@ operatorBtns.forEach((button) => {
 
         operate(operator, number1, number2)
 
+        // setting this variable to true will switch numbers from being assigned to number1 variable to number2 variable
         operatorClicked = true;
 
-        tempArray = []
+        numberArray = []
 
     })
 })
 
 equalsBtn.addEventListener('click', (e) => {
     
-    tempArray = []
+    numberArray = []
 
     operatorArray.push(e.target.innerText)
 
     assignOperators()
 
+    // use last operator that isn't equal so you can do consecutive '=' clicks and keep doing math using last operator that was clicked
     operate(lastOperatorThatIsNotEqual, number1, number2)
 
 })
 
+// resets everything back to 0/'' and if btns are disabled then re-enables them
 clearBtn.addEventListener('click', (e) => {
-    tempArray = [];
+    numberArray = [];
     operatorArray = [];
     number1 = 0;
     number2 = 0;
@@ -104,13 +107,30 @@ clearBtn.addEventListener('click', (e) => {
     numberBtns.forEach((button) => {button.disabled = false})
     operatorBtns.forEach((button) => {button.disabled = false})
     equalsBtn.disabled = false;
+    deleteBtn.disabled = false;
 
     console.log('CLEARED')
 })
 
+deleteBtn.addEventListener('click', (e) => {
+    if(operatorClicked == false) {
+        // remove the last number entered in the array
+        numberArray.splice(-1)
+        // join the array and assign it to the number variable
+        number1 = parseInt(numberArray.join(''))
+        console.log(`Number1: ${number1}`)
+    } else {
+        numberArray.splice(-1)
+        number2 = parseInt(numberArray.join(''))
+        console.log(`Number2: ${number2}`)
+    }
+
+    console.log('Delete last number')
+})
+
 function add(num1, num2) {
     total = num1 + num2
-    // assign number1 the value of total so it can be used for continous mathimatical equations being done consecutively 
+    // assign number1 the value of total so it can be used for mathimatical equations being done consecutively 
     number1 = total
     console.log(`${num1} + ${num2} = ${total}`)
     return total;
@@ -148,17 +168,15 @@ function operate(operator, num1, num2) {
     } else if (operator === "/") {
         if(num2 === 0) {
             console.log("CAN'T DIVIDE BY 0 DUMMY")
-            // disables the # & operator btns because can't divide by 0
+            // disables all the btns besides clear because you can't divide by 0
             // since numberBtns is querySelectorAll we need to loop through each btn with a forEach and have it be disabled for each button
             numberBtns.forEach((button) => {button.disabled = true})
             operatorBtns.forEach((button) => {button.disabled = true})
             // don't need a forEach since we aren't looping multiples
             equalsBtn.disabled = true;
+            deleteBtn.disabled = true;
         } else {
             divide(num1, num2)
         }
-    } else {
-        console.log("OOPS something went wrong")
     }
-
 }
