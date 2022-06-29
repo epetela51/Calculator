@@ -77,12 +77,8 @@ operatorBtns.forEach((button) => {
 
         assignOperators()
 
-        // primary use of if/else statement is for displaying the operator based on if it's the first time an operator is clicked or the second+ time it's clicked
-        if(operatorClicked == false) {
-            displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
-        } else {
-            displayOperator.textContent = `${operatorArray[operatorArray.length-2]}`
-        }
+        // we only want to DISPLAY the last operator that was clicked but don't want to use the global variables as they are already setup to correctly perform a variety of math
+        displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
 
         operate(operator, number1, number2)
 
@@ -105,7 +101,7 @@ equalsBtn.addEventListener('click', (e) => {
     // use last operator that isn't equal so you can do consecutive '=' clicks and keep doing math using last operator that was clicked
     operate(lastOperatorThatIsNotEqual, number1, number2)
 
-    displayTotal.textContent = `= ${total}`
+    displayTotal.textContent = ` = ${total}`
 
 })
 
@@ -125,6 +121,12 @@ clearBtn.addEventListener('click', (e) => {
     deleteBtn.disabled = false;
     // used just to clear the console, easier for debugging
     console.clear()
+
+    // clears the content of the UI
+    displayNumberOne.textContent = ''
+    displayNumberTwo.textContent = ''
+    displayOperator.textContent = ''
+    displayTotal.textContent = ''
 
     console.log('CLEARED')
 })
