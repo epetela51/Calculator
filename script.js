@@ -9,14 +9,20 @@ let number2 = 0;
 let total = 0;
 let operatorClicked = false;
 
+// input buttons user selects
 // all the number & operator buttons
 let numberBtns = document.querySelectorAll(`[data-number]`)
 let operatorBtns = document.querySelectorAll('[data-operators]')
-
 // don't need to use querySelectorAll since there are not multiple items being selected
 let equalsBtn = document.querySelector('#equalsBtn')
 let clearBtn = document.querySelector('#clearBtn')
 let deleteBtn = document.querySelector('#deleteBtn')
+
+// display on UI
+let displayNumberOne = document.querySelector('#numberOne')
+let displayNumberTwo = document.querySelector('#numberTwo')
+let displayOperator = document.querySelector('#operatorChosen')
+let displayTotal = document.querySelector('#total')
 
 
 // loop through all the number btns and add a click event listener to grab the number clicked, push it into the array and assign a value to a number1 or number2 variable
@@ -33,8 +39,6 @@ function assignOperators() {
     // this is used to grab the second to last operator clicked so when clicking on an operator math will be done ONLY using the second to last operator clicked (i.e. 1+2-3.  On the - click math will be done for 1+2 since + was the second to last operator clicked)
     operator = operatorArray[operatorArray.length-2]
     console.log(`Second to Last Click: ${operator}`)
-    // if you look at the operator array here you will see it in the order you clicked operators because it becomes BEFORE the reverse method
-    console.log(operatorArray)
 
     // IMPORTANT: this is needed when doing consecutive = clicks.  If you just use the operator variable then after the second = click you will just get = as the previous operator and no math will be done.  This will grab the last operator that was clicked that is NOT =
     // the reverse method reverses the order of the array so the end goes to the front, etc.. so now when you go to find something even though it's still starting at the front it is "technically" the end of the array just reversed
@@ -56,9 +60,11 @@ function assignNumbers() {
 
     if (operatorClicked === false) {
         number1 = parseInt(numberArray.join(''))
+        displayNumberOne.textContent = `${number1}`
         console.log(`Number1: ${number1}`)
     } else {
         number2 = parseInt(numberArray.join(''))
+        displayNumberTwo.textContent = `${number2}`
         console.log(`Number2: ${number2}`)
     }
 }
@@ -70,6 +76,13 @@ operatorBtns.forEach((button) => {
         operatorArray.push(e.target.innerText)
 
         assignOperators()
+
+        // primary use of if/else statement is for displaying the operator based on if it's the first time an operator is clicked or the second+ time it's clicked
+        if(operatorClicked == false) {
+            displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
+        } else {
+            displayOperator.textContent = `${operatorArray[operatorArray.length-2]}`
+        }
 
         operate(operator, number1, number2)
 
@@ -92,6 +105,8 @@ equalsBtn.addEventListener('click', (e) => {
     // use last operator that isn't equal so you can do consecutive '=' clicks and keep doing math using last operator that was clicked
     operate(lastOperatorThatIsNotEqual, number1, number2)
 
+    displayTotal.textContent = `= ${total}`
+
 })
 
 // resets everything back to 0/'' and if btns are disabled then re-enables them
@@ -108,6 +123,8 @@ clearBtn.addEventListener('click', (e) => {
     operatorBtns.forEach((button) => {button.disabled = false})
     equalsBtn.disabled = false;
     deleteBtn.disabled = false;
+    // used just to clear the console, easier for debugging
+    console.clear()
 
     console.log('CLEARED')
 })
