@@ -77,10 +77,18 @@ operatorBtns.forEach((button) => {
 
         assignOperators()
 
-        // we only want to DISPLAY the last operator that was clicked but don't want to use the global variables as they are already setup to correctly perform a variety of math
-        displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
-
         operate(operator, number1, number2)
+
+        // this if/else statement needs to go BELOW the operate function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
+        // on first click ofo the operator it will be 'undefined' because operator is ONLY assigned on the second operator that is clicked (look at assignOperator function for specifics)
+        if (operator !== undefined) {
+            displayNumberOne.textContent = `${total}`
+            // this displays the last operator clicked
+            displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
+            displayNumberTwo.textContent = ``
+        } else {
+            displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
+        }
 
         // setting this variable to true will switch numbers from being assigned to number1 variable to number2 variable
         operatorClicked = true;
