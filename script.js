@@ -86,7 +86,7 @@ operatorBtns.forEach((button) => {
 
         assignOperators()
 
-        operate(operator, number1, number2)
+        performMath(operator, number1, number2)
 
         if (operator == '/' && number2 == 0) {
             displayCantDivideByZero()
@@ -119,7 +119,7 @@ equalsBtn.addEventListener('click', (e) => {
     assignOperators()
 
     // use last operator that isn't equal so you can do consecutive '=' clicks and keep doing math using last operator that was clicked
-    operate(lastOperatorThatIsNotEqual, number1, number2)
+    performMath(lastOperatorThatIsNotEqual, number1, number2)
 
     if (operator == '/' && number2 == 0) {
         displayCantDivideByZero()
@@ -219,7 +219,7 @@ function divide(num1, num2) {
 }
 
 // takes an operator (+, -, /, *) along with 2 numbers
-function operate(operator, num1, num2) {
+function performMath(operator, num1, num2) {
     if(operator === "+") {
         add(num1, num2)
     } else if (operator === "-") {
