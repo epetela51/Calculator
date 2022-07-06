@@ -90,8 +90,17 @@ operatorBtns.forEach((button) => {
 
         if (operator == '/' && number2 == 0) {
             displayCantDivideByZero()
-        }
-        // this if/else statement needs to go BELOW the operate function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
+        } 
+        // this else/if is used when doing calculations directly after = is clicked
+        // example:
+        // 1+2 = 3-2=1
+        else if (operator == '=') {
+            displayNumberOne.textContent = `${total}`
+            displayOperator.textContent = `${lastOperatorThatIsNotEqual}`
+            displayNumberTwo.textContent = ``
+            displayTotal.textContent = ``
+         }
+        // this else/if statement needs to go BELOW the operate function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
         // on first click of the operator it will be 'undefined' because operator is ONLY assigned on the second operator click (look at assignOperator function for specifics)
         else if (operator !== undefined) {
             displayNumberOne.textContent = `${total}`
@@ -106,6 +115,9 @@ operatorBtns.forEach((button) => {
         operatorClicked = true;
 
         numberArray = []
+
+        // re-enable the delete btn to be used as it is disabled after clicking '='
+        deleteBtn.disabled = false;
 
     })
 })
@@ -140,6 +152,9 @@ equalsBtn.addEventListener('click', (e) => {
         displayTotal.textContent = ` = ${total}` 
     }
 
+    // disable delete btn so you can't delete once something is summed up
+    deleteBtn.disabled = true;
+
 })
 
 // resets everything back to 0/'' and if btns are disabled then re-enables them
@@ -149,6 +164,7 @@ clearBtn.addEventListener('click', (e) => {
     number1 = 0;
     number2 = 0;
     total = 0;
+    previousTotal = 0;
     operator = '';
     lastOperatorThatIsNotEqual = '';
     operatorClicked = false;
@@ -179,6 +195,13 @@ deleteBtn.addEventListener('click', (e) => {
         numberArray.splice(-1)
         number2 = parseInt(numberArray.join(''))
         console.log(`Number2: ${number2}`)
+    }
+
+    // if the operator was clicked that means you are using number2 so delete the last number entered for number 2.  If it was NOT clicked then that means you are working on number 1 so delete the last number entered for number 1
+    if (operatorClicked == true) {
+        displayNumberTwo.textContent = `${number2}`
+    } else {
+        displayNumberOne.textContent = `${number1}`
     }
 
     console.log('Delete last number')
