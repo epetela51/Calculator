@@ -79,9 +79,16 @@ operatorBtns.forEach((button) => {
 
         operate(operator, number1, number2)
 
+        // used for if trying to divide by 0
+        if (operator == '/' && number2 == 0) {
+            displayNumberOne.textContent = ``
+            displayNumberTwo.textContent = ``
+            displayOperator.textContent = ``
+            displayTotal.textContent = 'CAN"T DIVIDE BY 0: START AGAIN'
+        }
         // this if/else statement needs to go BELOW the operate function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
-        // on first click ofo the operator it will be 'undefined' because operator is ONLY assigned on the second operator that is clicked (look at assignOperator function for specifics)
-        if (operator !== undefined) {
+        // on first click of the operator it will be 'undefined' because operator is ONLY assigned on the second operator click (look at assignOperator function for specifics)
+        else if (operator !== undefined) {
             displayNumberOne.textContent = `${total}`
             // this displays the last operator clicked
             displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
@@ -109,7 +116,14 @@ equalsBtn.addEventListener('click', (e) => {
     // use last operator that isn't equal so you can do consecutive '=' clicks and keep doing math using last operator that was clicked
     operate(lastOperatorThatIsNotEqual, number1, number2)
 
-    displayTotal.textContent = ` = ${total}`
+    if (operator == '/' && number2 == 0) {
+        displayNumberOne.textContent = ``
+        displayNumberTwo.textContent = ``
+        displayOperator.textContent = ``
+        displayTotal.textContent = 'CAN"T DIVIDE BY 0: START AGAIN'
+    } else {
+        displayTotal.textContent = ` = ${total}` 
+    }
 
 })
 
