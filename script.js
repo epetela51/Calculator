@@ -7,6 +7,7 @@ let lastOperatorThatIsNotEqual = '';
 let number1 = 0;
 let number2 = 0;
 let total = 0;
+let previousTotal = 0;
 let operatorClicked = false;
 
 // input buttons user selects
@@ -69,6 +70,14 @@ function assignNumbers() {
     }
 }
 
+// used for if trying to divide by 0
+function displayCantDivideByZero() {
+    displayNumberOne.textContent = ``
+    displayNumberTwo.textContent = ``
+    displayOperator.textContent = ``
+    displayTotal.textContent = 'CAN"T DIVIDE BY 0: START AGAIN'
+}
+
 // loop through all the operator btns and record operators that are clicked
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
@@ -79,12 +88,8 @@ operatorBtns.forEach((button) => {
 
         operate(operator, number1, number2)
 
-        // used for if trying to divide by 0
         if (operator == '/' && number2 == 0) {
-            displayNumberOne.textContent = ``
-            displayNumberTwo.textContent = ``
-            displayOperator.textContent = ``
-            displayTotal.textContent = 'CAN"T DIVIDE BY 0: START AGAIN'
+            displayCantDivideByZero()
         }
         // this if/else statement needs to go BELOW the operate function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
         // on first click of the operator it will be 'undefined' because operator is ONLY assigned on the second operator click (look at assignOperator function for specifics)
@@ -117,10 +122,20 @@ equalsBtn.addEventListener('click', (e) => {
     operate(lastOperatorThatIsNotEqual, number1, number2)
 
     if (operator == '/' && number2 == 0) {
-        displayNumberOne.textContent = ``
-        displayNumberTwo.textContent = ``
-        displayOperator.textContent = ``
-        displayTotal.textContent = 'CAN"T DIVIDE BY 0: START AGAIN'
+        displayCantDivideByZero()
+    }
+    // used for consecutive = clicks
+    // displays the previous total as number 1, keeps the last operator clicked and the new total
+    // example:
+    // 1+2 = 3
+    // click =
+    // 3+2 = 5
+    // click =
+    // 5+2 = 7
+    else if (operator == '=') {
+        displayNumberOne.textContent = `${previousTotal}`
+        displayOperator.textContent = `${lastOperatorThatIsNotEqual}`
+        displayTotal.textContent = `= ${total}`
     } else {
         displayTotal.textContent = ` = ${total}` 
     }
@@ -171,6 +186,8 @@ deleteBtn.addEventListener('click', (e) => {
 
 function add(num1, num2) {
     total = num1 + num2
+    // previousTotal is used for consecutive = clicks.  This is used primarily for the UI to display the previous total (i.e. 1+2=3=(3+2=5, etc...))
+    previousTotal = number1
     // assign number1 the value of total so it can be used for mathimatical equations being done consecutively 
     number1 = total
     console.log(`${num1} + ${num2} = ${total}`)
@@ -179,6 +196,7 @@ function add(num1, num2) {
 
 function subtract(num1, num2) {
     total = num1 - num2
+    previousTotal = number1
     number1 = total
     console.log(`${num1} - ${num2} = ${total}`)
     return total;
@@ -186,6 +204,7 @@ function subtract(num1, num2) {
 
 function multiply(num1, num2) {
     total = num1 * num2
+    previousTotal = number1
     number1 = total
     console.log(`${num1} * ${num2} = ${total}`)
     return total
@@ -193,6 +212,7 @@ function multiply(num1, num2) {
 
 function divide(num1, num2) {
     total = num1 / num2
+    previousTotal = number1
     number1 = total
     console.log(`${num1} / ${num2} = ${total}`)
     return total;
