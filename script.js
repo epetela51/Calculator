@@ -186,22 +186,31 @@ clearBtn.addEventListener('click', (e) => {
 
 deleteBtn.addEventListener('click', (e) => {
     if(operatorClicked == false) {
-        // remove the last number entered in the array
-        numberArray.splice(-1)
-        // join the array and assign it to the number variable
-        number1 = parseInt(numberArray.join(''))
-        console.log(`Number1: ${number1}`)
+        // used for deleting a single digit to show 0
+        // need the second numberArray.length == 0 otherwise if constantly clicking delete button you eventually get NaN
+        if (numberArray.length == 1 || numberArray.length == 0) {
+            // if you don't remove the number on next click it will carry over from array
+            numberArray.splice(-1)
+            displayNumberOne.textContent = `0`
+        } else {
+            // remove the last number entered in the array
+            numberArray.splice(-1)
+            // join the array and assign it to the number variable
+            number1 = parseInt(numberArray.join(''))
+            displayNumberOne.textContent = `${number1}`
+            console.log(`Number1: ${number1}`)
+            }
     } else {
-        numberArray.splice(-1)
-        number2 = parseInt(numberArray.join(''))
-        console.log(`Number2: ${number2}`)
-    }
+        if (numberArray.length == 1 || numberArray.length == 0) {
+            numberArray.splice(-1)
+            displayNumberTwo.textContent = `0`
+        } else {
+            numberArray.splice(-1)
+            number2 = parseInt(numberArray.join(''))
+            displayNumberTwo.textContent = `${number2}`
+            console.log(`Number2: ${number2}`)
+        }
 
-    // if the operator was clicked that means you are using number2 so delete the last number entered for number 2.  If it was NOT clicked then that means you are working on number 1 so delete the last number entered for number 1
-    if (operatorClicked == true) {
-        displayNumberTwo.textContent = `${number2}`
-    } else {
-        displayNumberOne.textContent = `${number1}`
     }
 
     console.log('Delete last number')
