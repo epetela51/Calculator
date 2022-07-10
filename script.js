@@ -9,6 +9,8 @@ let number2 = 0;
 let total = 0;
 let previousTotal = 0;
 let operatorClicked = false;
+// used to keep track of consecutive operator clicks in case user changes their mind on which operator to click
+let multipleOperatorsClicked = 0
 
 // input buttons user selects
 // all the number & operator buttons
@@ -32,6 +34,9 @@ numberBtns.forEach((button) => {
         numberArray.push(parseInt(e.target.innerText))
 
         assignNumbers()
+
+        // reset the operators clicked back to 0 so math can be performed going forward
+        multipleOperatorsClicked = 0
     })
 })
 
@@ -78,6 +83,31 @@ function displayCantDivideByZero() {
     displayTotal.textContent = 'CAN"T DIVIDE BY 0: START AGAIN'
 }
 
+function testFunction() {
+    if (operator == '/' && number2 == 0) {
+        displayCantDivideByZero()
+    } 
+    // this else/if is used when doing calculations directly after = is clicked
+    // example:
+    // 1+2 = 3-2=1
+    else if (operator == '=') {
+        displayNumberOne.textContent = `${total}`
+        displayOperator.textContent = `${lastOperatorThatIsNotEqual}`
+        displayNumberTwo.textContent = ``
+        displayTotal.textContent = ``
+     }
+    // this else/if statement needs to go BELOW the operate function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
+    // on first click of the operator it will be 'undefined' because operator is ONLY assigned on the second operator click (look at assignOperator function for specifics)
+    else if (operator !== undefined) {
+        displayNumberOne.textContent = `${total}`
+        // this displays the last operator clicked
+        displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
+        displayNumberTwo.textContent = ``
+    } else {
+        displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
+    }
+}
+
 // loop through all the operator btns and record operators that are clicked
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
@@ -86,28 +116,14 @@ operatorBtns.forEach((button) => {
 
         assignOperators()
 
-        performMath(operator, number1, number2)
+        multipleOperatorsClicked++
 
-        if (operator == '/' && number2 == 0) {
-            displayCantDivideByZero()
-        } 
-        // this else/if is used when doing calculations directly after = is clicked
-        // example:
-        // 1+2 = 3-2=1
-        else if (operator == '=') {
-            displayNumberOne.textContent = `${total}`
-            displayOperator.textContent = `${lastOperatorThatIsNotEqual}`
-            displayNumberTwo.textContent = ``
-            displayTotal.textContent = ``
-         }
-        // this else/if statement needs to go BELOW the operate function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
-        // on first click of the operator it will be 'undefined' because operator is ONLY assigned on the second operator click (look at assignOperator function for specifics)
-        else if (operator !== undefined) {
-            displayNumberOne.textContent = `${total}`
-            // this displays the last operator clicked
-            displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
-            displayNumberTwo.textContent = ``
+        if (multipleOperatorsClicked == 1) {
+            performMath(operator, number1, number2)
+            displayUIOnOperatorClick()
         } else {
+            let test = number1
+            displayNumberOne.textContent = `${test}`
             displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
         }
 
@@ -152,6 +168,8 @@ equalsBtn.addEventListener('click', (e) => {
         displayTotal.textContent = ` = ${total}` 
     }
 
+    multipleOperatorsClicked = 0
+
     // disable delete btn so you can't delete once something is summed up
     deleteBtn.disabled = true;
 
@@ -168,6 +186,7 @@ clearBtn.addEventListener('click', (e) => {
     operator = '';
     lastOperatorThatIsNotEqual = '';
     operatorClicked = false;
+    multipleOperatorsClicked = 0
     numberBtns.forEach((button) => {button.disabled = false})
     operatorBtns.forEach((button) => {button.disabled = false})
     equalsBtn.disabled = false;
