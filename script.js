@@ -83,7 +83,7 @@ function displayCantDivideByZero() {
     displayTotal.textContent = 'CAN"T DIVIDE BY 0: START AGAIN'
 }
 
-function testFunction() {
+function displayUIOnOperatorClick() {
     if (operator == '/' && number2 == 0) {
         displayCantDivideByZero()
     } 
@@ -122,8 +122,8 @@ operatorBtns.forEach((button) => {
             performMath(operator, number1, number2)
             displayUIOnOperatorClick()
         } else {
-            let test = number1
-            displayNumberOne.textContent = `${test}`
+            let tempNumberOne = number1
+            displayNumberOne.textContent = `${tempNumberOne}`
             displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
         }
 
