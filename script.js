@@ -101,21 +101,21 @@ function displayUIOnOperatorClick() {
 // keyboard clicks
 document.addEventListener('keydown', (e) => {
 
-    if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
-        console.log(e.key)
+    // use isFinite method instead of isNaN to check if it's an integer/number
+    if (isFinite(e.key)) {
+        console.log('number')
+        numberBtnClicked(e.key)
+    } else if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
         operatorBtnClicked(e.key)
-    } else if (e.key === "Enter") {
-        console.log(e.key)
+    } else if (e.key === 'Enter') {
         equalBtnClicked(e.key)
     } else if (e.key === 'Backspace') {
-        console.log(e.key)
         deleteBtnClicked()
     } else if (e.key === 'Escape') {
-        console.log(e.key)
         clearBtnClicked()
     } else {
-        console.log(e.key)
-        numberBtnClicked(e.key)
+        console.log('ERROR: INVALID KEY')
+        return
     }
 
 })
