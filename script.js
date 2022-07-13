@@ -125,6 +125,16 @@ function numberBtnClicked(e) {
 
     assignNumbers()
 
+    
+    // used when the last thing clicked was = and instead of clearing to start new math equation you just click a new number to start a new equation
+    if(operatorArray[operatorArray.length-1] == "=" || operatorArray[operatorArray.length-1] == "Enter") {
+        clearBtnClicked()
+        numberArray.push(parseInt(e))
+        assignNumbers()
+    } else {
+        console.log('Something went wrong')
+    }
+
     // reset the operators clicked back to 0 so math can be performed going forward
     multipleOperatorsClicked = 0
 }
