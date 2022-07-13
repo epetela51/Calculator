@@ -27,19 +27,6 @@ let displayNumberTwo = document.querySelector('#numberTwo')
 let displayOperator = document.querySelector('#operatorChosen')
 let displayTotal = document.querySelector('#total')
 
-
-// loop through all the number btns and add a click event listener to grab the number clicked, push it into the array and assign a value to a number1 or number2 variable
-numberBtns.forEach((button) => {
-    button.addEventListener('click', (e) => {
-        numberArray.push(parseInt(e.target.innerText))
-
-        assignNumbers()
-
-        // reset the operators clicked back to 0 so math can be performed going forward
-        multipleOperatorsClicked = 0
-    })
-})
-
 function assignOperators() {
 
     // this is used to grab the second to last operator clicked so when clicking on an operator math will be done ONLY using the second to last operator clicked (i.e. 1+2-3.  On the - click math will be done for 1+2 since + was the second to last operator clicked)
@@ -48,7 +35,10 @@ function assignOperators() {
 
     // IMPORTANT: this is needed when doing consecutive = clicks.  If you just use the operator variable then after the second = click you will just get = as the previous operator and no math will be done.  This will grab the last operator that was clicked that is NOT =
     // the reverse method reverses the order of the array so the end goes to the front, etc.. so now when you go to find something even though it's still starting at the front it is "technically" the end of the array just reversed
-    lastOperatorThatIsNotEqual = operatorArray.reverse().find(e => e !== "=")
+    // using the && in e !== "=" && e !== 'Enter' is because when using the array.prototype.find property you can NOT use ||, you need to use && so it knows to look for both
+    lastOperatorThatIsNotEqual = operatorArray.reverse().find(
+        e => e !== "=" && e !== 'Enter')
+
     // if you look at the operator array here you will see it reversed because it comes after the reverse method
     console.log(operatorArray)
     console.log(`Previous Operator NOT = : ${lastOperatorThatIsNotEqual}`)
@@ -90,7 +80,7 @@ function displayUIOnOperatorClick() {
     // this else/if is used when doing calculations directly after = is clicked
     // example:
     // 1+2 = 3-2=1
-    else if (operator == '=') {
+    else if (operator == '=' || operator == 'Enter') {
         displayNumberOne.textContent = `${total}`
         displayOperator.textContent = `${lastOperatorThatIsNotEqual}`
         displayNumberTwo.textContent = ``
@@ -108,41 +98,88 @@ function displayUIOnOperatorClick() {
     }
 }
 
-// loop through all the operator btns and record operators that are clicked
-operatorBtns.forEach((button) => {
+// keyboard clicks
+document.addEventListener('keydown', (e) => {
+
+    // use isFinite method instead of isNaN to check if it's an integer/number
+    if (isFinite(e.key)) {
+        console.log('number')
+        numberBtnClicked(e.key)
+    } else if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
+        operatorBtnClicked(e.key)
+    } else if (e.key === 'Enter') {
+        equalBtnClicked(e.key)
+    } else if (e.key === 'Backspace') {
+        deleteBtnClicked()
+    } else if (e.key === 'Escape') {
+        clearBtnClicked()
+    } else {
+        console.log('ERROR: INVALID KEY')
+        return
+    }
+
+})
+
+function numberBtnClicked(e) {
+    numberArray.push(parseInt(e))
+
+    assignNumbers()
+
+    
+    // used when the last thing clicked was = and instead of clearing to start new math equation you just click a new number to start a new equation
+    if(operatorArray[operatorArray.length-1] == "=" || operatorArray[operatorArray.length-1] == "Enter") {
+        clearBtnClicked()
+        numberArray.push(parseInt(e))
+        assignNumbers()
+    } else {
+        console.log('Something went wrong')
+    }
+
+    // reset the operators clicked back to 0 so math can be performed going forward
+    multipleOperatorsClicked = 0
+}
+
+numberBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
-
-        operatorArray.push(e.target.innerText)
-
-        assignOperators()
-
-        multipleOperatorsClicked++
-
-        if (multipleOperatorsClicked == 1) {
-            performMath(operator, number1, number2)
-            displayUIOnOperatorClick()
-        } else {
-            let tempNumberOne = number1
-            displayNumberOne.textContent = `${tempNumberOne}`
-            displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
-        }
-
-        // setting this variable to true will switch numbers from being assigned to number1 variable to number2 variable
-        operatorClicked = true;
-
-        numberArray = []
-
-        // re-enable the delete btn to be used as it is disabled after clicking '='
-        deleteBtn.disabled = false;
-
+        numberBtnClicked(e.target.innerText)
     })
 })
 
-equalsBtn.addEventListener('click', (e) => {
-    
+function operatorBtnClicked(e) {
+    operatorArray.push(e)
+
+    assignOperators()
+
+    multipleOperatorsClicked++
+
+    if (multipleOperatorsClicked == 1) {
+        performMath(operator, number1, number2)
+        displayUIOnOperatorClick()
+    } else {
+        let tempNumberOne = number1
+        displayNumberOne.textContent = `${tempNumberOne}`
+        displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
+    }
+
+    // setting this variable to true will switch numbers from being assigned to number1 variable to number2 variable
+    operatorClicked = true;
+
     numberArray = []
 
-    operatorArray.push(e.target.innerText)
+    // re-enable the delete btn to be used as it is disabled after clicking '='
+    deleteBtn.disabled = false;
+}
+
+operatorBtns.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        operatorBtnClicked(e.target.innerText)
+    })
+})
+
+function equalBtnClicked(e) {
+    numberArray = []
+
+    operatorArray.push(e)
 
     assignOperators()
 
@@ -160,7 +197,7 @@ equalsBtn.addEventListener('click', (e) => {
     // 3+2 = 5
     // click =
     // 5+2 = 7
-    else if (operator == '=') {
+    else if (operator == '=' || operator == 'Enter') {
         displayNumberOne.textContent = `${previousTotal}`
         displayOperator.textContent = `${lastOperatorThatIsNotEqual}`
         displayTotal.textContent = `= ${total}`
@@ -172,11 +209,13 @@ equalsBtn.addEventListener('click', (e) => {
 
     // disable delete btn so you can't delete once something is summed up
     deleteBtn.disabled = true;
+}
 
+equalsBtn.addEventListener('click', (e) => {
+    equalBtnClicked(e.target.innerText)
 })
 
-// resets everything back to 0/'' and if btns are disabled then re-enables them
-clearBtn.addEventListener('click', (e) => {
+function clearBtnClicked() {
     numberArray = [];
     operatorArray = [];
     number1 = 0;
@@ -201,9 +240,14 @@ clearBtn.addEventListener('click', (e) => {
     displayTotal.textContent = ''
 
     console.log('CLEARED')
+}
+
+clearBtn.addEventListener('click', (e) => {
+    clearBtnClicked()
+
 })
 
-deleteBtn.addEventListener('click', (e) => {
+function deleteBtnClicked() {
     if(operatorClicked == false) {
         // used for deleting a single digit to show 0
         // need the second numberArray.length == 0 otherwise if constantly clicking delete button you eventually get NaN
@@ -233,6 +277,10 @@ deleteBtn.addEventListener('click', (e) => {
     }
 
     console.log('Delete last number')
+}
+
+deleteBtn.addEventListener('click', (e) => {
+    deleteBtnClicked()
 })
 
 function add(num1, num2) {
