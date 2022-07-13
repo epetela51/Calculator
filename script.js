@@ -2,7 +2,8 @@
 let numberArray = []
 let operatorArray = []
 
-let operator = '';
+let lastOperator = '';
+let secondToLastOperator = '';
 let lastOperatorThatIsNotEqual = '';
 let number1 = 0;
 let number2 = 0;
@@ -29,9 +30,11 @@ let displayTotal = document.querySelector('#total')
 
 function assignOperators() {
 
-    // this is used to grab the second to last operator clicked so when clicking on an operator math will be done ONLY using the second to last operator clicked (i.e. 1+2-3.  On the - click math will be done for 1+2 since + was the second to last operator clicked)
-    operator = operatorArray[operatorArray.length-2]
-    console.log(`Second to Last Click: ${operator}`)
+    lastOperator = operatorArray[operatorArray.length-1]
+    
+    // this is the PRIMARY operator variable that is used when doing math.  It used to grab the second to last operator clicked so when clicking on an operator math will be done ONLY using the second to last operator clicked (i.e. 1+2-3.  On the - click math will be done for 1+2 since + was the second to last operator clicked)
+    secondToLastOperator = operatorArray[operatorArray.length-2]
+    console.log(`Second to Last Click: ${secondToLastOperator}`)
 
     // IMPORTANT: this is needed when doing consecutive = clicks.  If you just use the operator variable then after the second = click you will just get = as the previous operator and no math will be done.  This will grab the last operator that was clicked that is NOT =
     // the reverse method reverses the order of the array so the end goes to the front, etc.. so now when you go to find something even though it's still starting at the front it is "technically" the end of the array just reversed
@@ -74,13 +77,13 @@ function displayCantDivideByZero() {
 }
 
 function displayUIOnOperatorClick() {
-    if (operator == '/' && number2 == 0) {
+    if (secondToLastOperator == '/' && number2 == 0) {
         displayCantDivideByZero()
     } 
     // this else/if is used when doing calculations directly after = is clicked
     // example:
     // 1+2 = 3-2=1
-    else if (operator == '=' || operator == 'Enter') {
+    else if (secondToLastOperator == '=' || secondToLastOperator == 'Enter') {
         displayNumberOne.textContent = `${total}`
         displayOperator.textContent = `${lastOperatorThatIsNotEqual}`
         displayNumberTwo.textContent = ``
@@ -88,13 +91,13 @@ function displayUIOnOperatorClick() {
      }
     // this else/if statement needs to go BELOW the operate function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
     // on first click of the operator it will be 'undefined' because operator is ONLY assigned on the second operator click (look at assignOperator function for specifics)
-    else if (operator !== undefined) {
+    else if (secondToLastOperator !== undefined) {
         displayNumberOne.textContent = `${total}`
         // this displays the last operator clicked
-        displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
+        displayOperator.textContent = `${lastOperator}`
         displayNumberTwo.textContent = ``
     } else {
-        displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
+        displayOperator.textContent = `${lastOperator}`
     }
 }
 
@@ -127,7 +130,7 @@ function numberBtnClicked(e) {
 
     
     // used when the last thing clicked was = and instead of clearing to start new math equation you just click a new number to start a new equation
-    if(operatorArray[operatorArray.length-1] == "=" || operatorArray[operatorArray.length-1] == "Enter") {
+    if(lastOperator == "=" || lastOperator == "Enter") {
         clearBtnClicked()
         numberArray.push(parseInt(e))
         assignNumbers()
@@ -153,12 +156,12 @@ function operatorBtnClicked(e) {
     multipleOperatorsClicked++
 
     if (multipleOperatorsClicked == 1) {
-        performMath(operator, number1, number2)
+        performMath(secondToLastOperator, number1, number2)
         displayUIOnOperatorClick()
     } else {
         let tempNumberOne = number1
         displayNumberOne.textContent = `${tempNumberOne}`
-        displayOperator.textContent = `${operatorArray[operatorArray.length-1]}`
+        displayOperator.textContent = `${lastOperator}`
     }
 
     // setting this variable to true will switch numbers from being assigned to number1 variable to number2 variable
@@ -186,7 +189,7 @@ function equalBtnClicked(e) {
     // use last operator that isn't equal so you can do consecutive '=' clicks and keep doing math using last operator that was clicked
     performMath(lastOperatorThatIsNotEqual, number1, number2)
 
-    if (operator == '/' && number2 == 0) {
+    if (secondToLastOperator == '/' && number2 == 0) {
         displayCantDivideByZero()
     }
     // used for consecutive = clicks
@@ -197,7 +200,7 @@ function equalBtnClicked(e) {
     // 3+2 = 5
     // click =
     // 5+2 = 7
-    else if (operator == '=' || operator == 'Enter') {
+    else if (secondToLastOperator == '=' || secondToLastOperator == 'Enter') {
         displayNumberOne.textContent = `${previousTotal}`
         displayOperator.textContent = `${lastOperatorThatIsNotEqual}`
         displayTotal.textContent = `= ${total}`
@@ -222,7 +225,8 @@ function clearBtnClicked() {
     number2 = 0;
     total = 0;
     previousTotal = 0;
-    operator = '';
+    lastOperator = '';
+    secondToLastOperator = '';
     lastOperatorThatIsNotEqual = '';
     operatorClicked = false;
     multipleOperatorsClicked = 0
@@ -318,14 +322,14 @@ function divide(num1, num2) {
 }
 
 // takes an operator (+, -, /, *) along with 2 numbers
-function performMath(operator, num1, num2) {
-    if(operator === "+") {
+function performMath(secondToLastOperator, num1, num2) {
+    if(secondToLastOperator === "+") {
         add(num1, num2)
-    } else if (operator === "-") {
+    } else if (secondToLastOperator === "-") {
         subtract(num1, num2)
-    } else if (operator === "*") {
+    } else if (secondToLastOperator === "*") {
         multiply(num1, num2)
-    } else if (operator === "/") {
+    } else if (secondToLastOperator === "/") {
         if(num2 === 0) {
             console.log("CAN'T DIVIDE BY 0 DUMMY")
             // disables all the btns besides clear because you can't divide by 0
