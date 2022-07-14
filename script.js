@@ -168,9 +168,6 @@ function operatorBtnClicked(e) {
     operatorClicked = true;
 
     numberArray = []
-
-    // re-enable the delete btn to be used as it is disabled after clicking '='
-    deleteBtn.disabled = false;
 }
 
 operatorBtns.forEach((button) => {
@@ -209,9 +206,6 @@ function equalBtnClicked(e) {
     }
 
     multipleOperatorsClicked = 0
-
-    // disable delete btn so you can't delete once something is summed up
-    deleteBtn.disabled = true;
 }
 
 equalsBtn.addEventListener('click', (e) => {
@@ -233,7 +227,6 @@ function clearBtnClicked() {
     numberBtns.forEach((button) => {button.disabled = false})
     operatorBtns.forEach((button) => {button.disabled = false})
     equalsBtn.disabled = false;
-    deleteBtn.disabled = false;
     // used just to clear the console, easier for debugging
     console.clear()
 
@@ -267,8 +260,14 @@ function deleteBtnClicked() {
             displayNumberOne.textContent = `${number1}`
             console.log(`Number1: ${number1}`)
             }
-    } else {
-        if (numberArray.length == 1 || numberArray.length == 0) {
+    } else if (operatorClicked == true) {
+        // first if is for checking to see if user clicks backspace after = is clicked which wipes out the display except for the total which can be used as the starting point of new equation
+        if (lastOperator == "=" || lastOperator == "Enter") {
+            displayNumberOne.textContent = `${total}`
+            displayOperator.textContent = ''
+            displayNumberTwo.textContent = ''
+            displayTotal.textContent = ''
+        } else if (numberArray.length == 1 || numberArray.length == 0) {
             numberArray.splice(-1)
             displayNumberTwo.textContent = `0`
         } else {
@@ -338,7 +337,6 @@ function performMath(secondToLastOperator, num1, num2) {
             operatorBtns.forEach((button) => {button.disabled = true})
             // don't need a forEach since we aren't looping multiples
             equalsBtn.disabled = true;
-            deleteBtn.disabled = true;
         } else {
             divide(num1, num2)
         }
