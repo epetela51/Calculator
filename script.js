@@ -156,7 +156,7 @@ function operatorBtnClicked(e) {
     multipleOperatorsClicked++
 
     if (multipleOperatorsClicked == 1) {
-        if (secondToLastOperator == 'Backspace') {
+        if (secondToLastOperator == 'Backspace' || secondToLastOperator == 'Delete') {
             performMath(lastOperator, number1, number2)
             displayUIOnOperatorClick()
         } else {
