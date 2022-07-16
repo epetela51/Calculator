@@ -88,7 +88,7 @@ function displayUIOnOperatorClick() {
         displayOperator.textContent = `${lastOperatorThatIsNotEqualOrDelete}`
         displayNumberTwo.textContent = ``
         displayTotal.textContent = ``
-     }
+    }
     // this else/if statement needs to go BELOW the operate function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
     // on first click of the operator it will be 'undefined' because operator is ONLY assigned on the second operator click (look at assignOperator function for specifics)
     else if (secondToLastOperator !== undefined) {
@@ -292,6 +292,15 @@ function deleteBtnClicked(e) {
             console.log(`Number2: ${number2}`)
         }
 
+    }
+
+    // used for deleting after a complete equation so you can start a new equation off with the total from previous equation
+    // i.e. 1+2=3
+    // delete clicked
+    // 3 (ready for next operator click)
+    if(lastOperator == '='  || lastOperator == 'Enter') {
+        // clear the operator array so on next operator click undefined is passed as the operator which will NOT perform math until either = or another operator is clicked
+        operatorArray = []
     }
 
     console.log('Delete last number')
