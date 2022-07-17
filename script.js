@@ -159,6 +159,12 @@ function operatorBtnClicked(e) {
         if (secondToLastOperator == 'Backspace' || secondToLastOperator == 'Delete') {
             performMath(lastOperator, number1, number2)
             displayUIOnOperatorClick()
+        }
+        // this section is for scenarios such as:
+        // 1=+
+        else if ((secondToLastOperator == 'Enter' || secondToLastOperator == '=') && ((lastOperator != 'Delete' || lastOperator != 'Backspace') || (lastOperator != "Enter" || lastOperator != "="))) {
+            displayNumberOne.textContent = `${number1}`
+            displayOperator.textContent = `${lastOperator}`
         } else {
             performMath(secondToLastOperator, number1, number2)
             displayUIOnOperatorClick()
@@ -189,9 +195,16 @@ function equalBtnClicked(e) {
 
     assignOperators()
 
-    // use last operator that isn't equal so you can do consecutive '=' clicks and keep doing math using last operator that was clicked
-    performMath(lastOperatorThatIsNotEqualOrDelete, number1, number2)
+    // this is for scenarios such as clicking = as the first part of the equation or after first number click then =
+    // i.e. 1=
+    if (lastOperatorThatIsNotEqualOrDelete == undefined) {
+        return
+    } else {
+        // use last operator that isn't equal so you can do consecutive '=' clicks and keep doing math using last operator that was clicked
+        performMath(lastOperatorThatIsNotEqualOrDelete, number1, number2)
+    }
 
+    // below if/else statements are strictly to determine the display
     if (secondToLastOperator == '/' && number2 == 0) {
         displayCantDivideByZero()
     }
