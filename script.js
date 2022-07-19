@@ -4,12 +4,14 @@ let operatorArray = []
 
 let lastOperator = '';
 let secondToLastOperator = '';
+let threeOperatorsBack = '';
 let lastOperatorThatIsNotEqualOrDelete = '';
 let number1 = 0;
 let number2 = 0;
 let total = 0;
 let previousTotal = 0;
 let operatorClicked = false;
+let number2Clicked
 // used to keep track of consecutive operator clicks in case user changes their mind on which operator to click
 let multipleOperatorsClicked = 0
 
@@ -35,6 +37,9 @@ function assignOperators() {
     // this is the PRIMARY operator variable that is used when doing math.  It used to grab the second to last operator clicked so when clicking on an operator math will be done ONLY using the second to last operator clicked (i.e. 1+2-3.  On the - click math will be done for 1+2 since + was the second to last operator clicked)
     secondToLastOperator = operatorArray[operatorArray.length-2]
     console.log(`Second to Last Click: ${secondToLastOperator}`)
+
+    threeOperatorsBack = operatorArray[operatorArray.length-3]
+    console.log(`Three operators back: ${threeOperatorsBack}`)
 
     // IMPORTANT: this is needed when doing consecutive = clicks.  If you just use the operator variable then after the second = click you will just get = as the previous operator and no math will be done.  This will grab the last operator that was clicked that is NOT =
     // the reverse method reverses the order of the array so the end goes to the front, etc.. so now when you go to find something even though it's still starting at the front it is "technically" the end of the array just reversed
@@ -65,6 +70,7 @@ function assignNumbers() {
         number2 = parseInt(numberArray.join(''))
         displayNumberTwo.textContent = `${number2}`
         console.log(`Number2: ${number2}`)
+        number2Clicked = true
     }
 }
 
@@ -89,7 +95,7 @@ function displayUIOnOperatorClick() {
         displayNumberTwo.textContent = ``
         displayTotal.textContent = ``
     }
-    // this else/if statement needs to go BELOW the operate function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
+    // this else/if statement needs to go BELOW the performMath function otherwise the total will be 0 since it is displaying the number BEFORE the math can be done
     // on first click of the operator it will be 'undefined' because operator is ONLY assigned on the second operator click (look at assignOperator function for specifics)
     else if (secondToLastOperator !== undefined) {
         displayNumberOne.textContent = `${total}`
@@ -126,19 +132,26 @@ document.addEventListener('keydown', (e) => {
 function numberBtnClicked(e) {
     numberArray.push(parseInt(e))
 
-    assignNumbers()
-
-    
-    // used when the last thing clicked was = and instead of clearing to start new math equation you just click a new number to start a new equation
-    if(lastOperator == "=" || lastOperator == "Enter") {
+    // if/else statement used for:
+    // 1+=
+    // or
+    // completing equation ending with = and then clicking a number to start a new equation.  This clears the screen instead of forcing you to click clear button
+    if((lastOperator == 'Enter' || lastOperator == '=') && number2Clicked == undefined) {
+        assignNumbers()
+        multipleOperatorsClicked = 0
+        return
+    } else if (lastOperator == 'Enter' || lastOperator == '='){
         clearBtnClicked()
         numberArray.push(parseInt(e))
         assignNumbers()
-    } else {
-        console.log('Something went wrong')
+        multipleOperatorsClicked = 0
+        return
     }
 
+    assignNumbers()
+
     // reset the operators clicked back to 0 so math can be performed going forward
+    // this is REQUIRED in order to do consecutive math (i.e. 4+5-3*2)
     multipleOperatorsClicked = 0
 }
 
@@ -160,14 +173,22 @@ function operatorBtnClicked(e) {
             performMath(lastOperator, number1, number2)
             displayUIOnOperatorClick()
         }
+        // used for combination of 1+=6-
+        else if ((secondToLastOperator == 'Enter' || secondToLastOperator == '=') && number2Clicked == true) {
+            performMath(threeOperatorsBack, number1, number2)
+            displayUIOnOperatorClick()
+        }
         // this section is for scenarios such as:
         // 1=+
         else if ((secondToLastOperator == 'Enter' || secondToLastOperator == '=') && ((lastOperator != 'Delete' || lastOperator != 'Backspace') || (lastOperator != "Enter" || lastOperator != "="))) {
             displayNumberOne.textContent = `${number1}`
             displayOperator.textContent = `${lastOperator}`
-        } else {
+        } else if (secondToLastOperator !== undefined) {
             performMath(secondToLastOperator, number1, number2)
             displayUIOnOperatorClick()
+        } else {
+            console.log('Just display last operator clicked')
+            displayOperator.textContent = `${lastOperator}`
         }
     } else {
         // used if user wants to change operator choice (i.e. 1+*)
@@ -195,13 +216,18 @@ function equalBtnClicked(e) {
 
     assignOperators()
 
-    // this is for scenarios such as clicking = as the first part of the equation or after first number click then =
-    // i.e. 1=
-    if (lastOperatorThatIsNotEqualOrDelete == undefined) {
+    // if the second # btn has NOT been clicked stop the function and return
+    if (number2Clicked == undefined) {
+        console.log('NUMBER 2 NOT CLICKED YET')
         return
-    } else {
+    } else if (lastOperatorThatIsNotEqualOrDelete !== undefined) {
         // use last operator that isn't equal so you can do consecutive '=' clicks and keep doing math using last operator that was clicked
         performMath(lastOperatorThatIsNotEqualOrDelete, number1, number2)
+    }
+    // this is for scenarios such as clicking = as the first part of the equation or after first number click then =
+    // i.e. = || 1=
+    else {
+        return
     }
 
     // below if/else statements are strictly to determine the display
@@ -249,6 +275,7 @@ function clearBtnClicked() {
     secondToLastOperator = '';
     lastOperatorThatIsNotEqualOrDelete = '';
     operatorClicked = false;
+    number2Clicked = undefined
     multipleOperatorsClicked = 0
     numberBtns.forEach((button) => {button.disabled = false})
     operatorBtns.forEach((button) => {button.disabled = false})
