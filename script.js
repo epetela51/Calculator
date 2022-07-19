@@ -170,8 +170,15 @@ function operatorBtnClicked(e) {
 
     if (multipleOperatorsClicked == 1) {
         if (secondToLastOperator == 'Backspace' || secondToLastOperator == 'Delete') {
-            performMath(lastOperator, number1, number2)
-            displayUIOnOperatorClick()
+            // this first nested if is for when delete is clicked on the first number but the second number has not been clicked yet so it just displays the last clicked operator
+            if(number2Clicked == undefined) {
+                displayOperator.textContent = `${lastOperator}`
+            }
+            // this else is for scenarios like 100 (delete so it's now 10) + 200 (delete so it's now 20) (minus -) it passes the third operator back which the  would be + => [delete, + delete, -]
+            else {
+                performMath(threeOperatorsBack, number1, number2)
+                displayUIOnOperatorClick()
+            }
         }
         // used for combination of 1+=6-
         else if ((secondToLastOperator == 'Enter' || secondToLastOperator == '=') && number2Clicked == true) {
