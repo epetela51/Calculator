@@ -11,36 +11,57 @@
 </head>
 <body>
 
-    <div>
-        <p>
-            <span id="numberOne"></span> <span id="operatorChosen"></span> <span id="numberTwo"></span> <span id="total"></span>
-        </p>
+
+    <div id="calcContainer">
+        <div id="outputScreenContainer">
+            <p id="numberAndOperatorOutput">
+                <span id="numberOne"></span> <span id="operatorChosen"></span> <span id="numberTwo"></span> <span id="total"></span>
+            </p>
+        </div>
+
+        <div id="numberAndOperatorBtnsMainContainer">
+            
+            <div id="deleteAndClearBtns">
+                <!-- delete button -->
+                <button id="deleteBtn">Delete</button>
+                <!-- clear button -->
+                <button id="clearBtn">Clear</button>                
+            </div>
+            
+            <div id="numbersAndOperators">
+                <div id="numbers">
+                    <!-- Buttons 0 - 9 -->
+                    <button data-number>7</button>
+                    <button data-number>8</button>
+                    <button data-number>9</button>
+
+                    <button data-number>4</button>
+                    <button data-number>5</button>
+                    <button data-number>6</button>
+
+                    <button data-number>1</button>
+                    <button data-number>2</button>
+                    <button data-number>3</button>
+
+                    <button id="zero" data-number>0</button>
+                </div>
+
+                <div id="operators">
+                    <!-- Operator buttons -->
+                    <button data-operators>/</button> 
+                    <button data-operators>*</button>
+                    <button data-operators>-</button>
+                    <button data-operators>+</button>
+                </div>
+            </div>
+
+            <div id="equals">
+                <!-- equals button -->
+                <button id="equalsBtn">=</button>
+            </div>
+
+        </div>
     </div>
-
-    <!-- Buttons 0 - 9 -->
-    <button data-number>0</button>
-    <button data-number>1</button>
-    <button data-number>2</button>
-    <button data-number>3</button>
-    <button data-number>4</button>
-    <button data-number>5</button>
-    <button data-number>6</button>
-    <button data-number>7</button>
-    <button data-number>8</button>
-    <button data-number>9</button>
-
-    <!-- Operator buttons -->
-    <button data-operators>+</button> 
-    <button data-operators>-</button>
-    <button data-operators>*</button>
-    <button data-operators>/</button>
-
-    <!-- equals button -->
-    <button id="equalsBtn">=</button>
-    <!-- delete button -->
-    <button id="deleteBtn">Delete</button>
-    <!-- clear button -->
-    <button id="clearBtn">Clear</button>
 
     <script src="script.js"></script>
 </body>

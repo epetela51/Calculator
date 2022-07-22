@@ -1,0 +1,64 @@
+/* container for the main body for the entire calculator */
+#calcContainer {
+    display: flex;
+    flex-direction: column;
+    border: 5px solid red;
+    width: 40%;
+    padding: 5px;
+}
+
+/* container for the screen of the calculator that displays the numbers/equations */
+#outputScreenContainer {
+    border: 5px solid black;
+    padding: 5px;
+    margin: 5px;
+}
+
+/* container that holds all the numbers & btns */
+#numberAndOperatorBtnsMainContainer {
+    border: 5px solid purple;
+    padding: 5px;
+    margin: 5px;
+}
+
+#deleteAndClearBtns {
+    border: 5px solid green;
+    padding: 5px;
+    margin: 5px;
+}
+
+#numbersAndOperators {
+    display: flex;
+    border: 5px solid red;
+}
+
+#numbers {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    border: 5px solid black;
+    gap: 10px;
+}
+
+/* used to stretch the zero button across all columns on the bottom */
+#zero {
+    grid-column: 1/4;
+}
+
+#operators {
+    display: flex;
+    flex-direction: column;
+    border: 5px solid orange;
+}
+
+#equals {
+    border: 5px solid blue;
+    padding: 5px;
+    margin: 5px;
+}
+
+/* styling of the numbers & operators */
+#numberAndOperatorOutput {
+    color: red;
+    font-weight: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
