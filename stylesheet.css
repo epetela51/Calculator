@@ -1,10 +1,16 @@
+/* used to center the calculator but allows any text above and below the calculator to be independent of this alignment */
+#mainContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* container for the main body for the entire calculator */
 #calcContainer {
-    display: flex;
-    flex-direction: column;
     border: 5px solid red;
-    width: 40%;
     padding: 5px;
+    width: 275px;
+    margin-top: 50px;
 }
 
 /* container for the screen of the calculator that displays the numbers/equations */
@@ -12,6 +18,7 @@
     border: 5px solid black;
     padding: 5px;
     margin: 5px;
+    height: 50px;
 }
 
 /* container that holds all the numbers & btns */
@@ -23,16 +30,13 @@
 
 #deleteAndClearBtns {
     border: 5px solid green;
-    padding: 5px;
-    margin: 5px;
 }
 
 #numbersAndOperators {
     display: grid;
     grid-template-columns: auto auto auto auto;
-    /* flex-grow: 6; */
     border: 5px solid red;
-    gap: 10px;
+    gap: 20px;
 }
 
 /* used to stretch the zero button across all columns on the bottom */
@@ -42,8 +46,6 @@
 
 #equals {
     border: 5px solid blue;
-    padding: 5px;
-    margin: 5px;
 }
 
 /* styling of the numbers & operators */
