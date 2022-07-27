@@ -240,7 +240,12 @@ function equalBtnClicked(e) {
         displayNumberOne.textContent = `${previousTotal}`
         displayOperator.textContent = `${lastOperatorThatIsNotEqualOrDelete}`
         displayTotal.textContent = `= ${total}`
-    } else {
+    }
+    // used for scenarios of 1+2-=
+    else if (secondToLastOperator == '-' || secondToLastOperator == '+' || secondToLastOperator == '/' || secondToLastOperator == '*') {
+        displayNumberTwo.textContent = `${number2}`
+        displayTotal.textContent = ` = ${total}`
+    }  else {
         displayTotal.textContent = ` = ${total}` 
     }
 

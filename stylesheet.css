@@ -1,0 +1,60 @@
+/* used to center the calculator but allows any text above and below the calculator to be independent of this alignment */
+#mainContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* container for the main body for the entire calculator */
+#calcContainer {
+    border: 5px solid red;
+    padding: 5px;
+    width: 275px;
+    margin-top: 50px;
+}
+
+/* container for the screen of the calculator that displays the numbers/equations */
+#outputScreenContainer {
+    border: 5px solid black;
+    padding: 5px;
+    margin: 5px;
+    height: 50px;
+}
+
+/* container that holds all the numbers & btns */
+#numberAndOperatorBtnsMainContainer {
+    border: 5px solid purple;
+    padding: 5px;
+    margin: 5px;
+}
+
+#deleteClearAndDivideBtns {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    column-gap: 15px;
+}
+
+#numbersAndOperatorsBtns {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    column-gap: 15px;
+    row-gap: 10px;
+    margin-top: 10px;
+}
+
+/* used to have the button sit in the second column */
+#zeroBtn {
+    grid-column: 2;
+}
+
+/* used to have the button sit in the last column */
+#equalsBtn {
+    grid-column: 4;
+}
+
+/* styling of the numbers & operators */
+#numberAndOperatorOutput {
+    color: red;
+    font-weight: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
