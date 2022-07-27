@@ -49,7 +49,11 @@
 
 /* used to stretch the zero button across all columns on the bottom */
 #zero {
-    grid-column: 1/4;
+    grid-column: 2;
+}
+
+#plus {
+    grid-column: 4;
 }
 
 #equalsBtn {
