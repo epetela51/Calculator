@@ -8,16 +8,17 @@
 /* container for the main body for the entire calculator */
 #calcContainer {
     padding: 5px;
-    width: 275px;
+    width: 300px;
+    padding: 10px;
     margin-top: 50px;
-    border-radius: 8px;
+    border-radius: 10px;
     /* midnight blue from apples new M2 macbook air */
     background-color: rgb(25,25,112);
 }
 
 /* this has to go above the individual selectors so individual styling takes precedence */
 #outputScreenContainer, #numberAndOperatorBtnsMainContainer {
-    border-radius: 4px;
+    border-radius: 10px;
     margin: 5px;
     padding: 5px;
 }
@@ -34,6 +35,7 @@
     /* matches the color of the apple logo */
     background-color: rgb(148,148,148);
     margin-top: 12px;
+    padding: 15px;
 }
 
 #deleteClearAndDivideBtns {
@@ -67,11 +69,14 @@
 }
 
 button {
-    border-radius: 4px;
+    border-radius: 10px;
     transition-duration: 0.2s;
+    font-size: 20px;
+    padding: 10px;
 }
 
-button:hover {
+/* use 'enabled' so affect only takes place when btn is NOT disabled */
+button:hover:enabled {
     /* matches color of calculator background on hover */
     background-color: rgb(25,25,112);
     color: white;
