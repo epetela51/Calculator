@@ -28,36 +28,28 @@
     margin: 5px;
 }
 
-#deleteAndClearBtns {
-    display: flex;
-    gap: 15px;
-    border: 5px solid green;
-}
-
-/* used to streth the buttons to take up the full width of the container */
-#clearBtn, #deleteBtn {
-    flex-grow: 1;
-}
-
-#numbersAndOperators {
+#deleteClearAndDivideBtns {
     display: grid;
-    grid-template-columns: auto auto auto auto;
-    border: 5px solid red;
-    gap: 20px;
-    margin-top: 5px;
+    grid-template-columns: repeat(3, auto);
+    column-gap: 15px;
 }
 
-/* used to stretch the zero button across all columns on the bottom */
-#zero {
+#numbersAndOperatorsBtns {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    column-gap: 15px;
+    row-gap: 10px;
+    margin-top: 10px;
+}
+
+/* used to have the button sit in the second column */
+#zeroBtn {
     grid-column: 2;
 }
 
-#plus {
-    grid-column: 4;
-}
-
+/* used to have the button sit in the last column */
 #equalsBtn {
-    grid-column: 1/5;
+    grid-column: 4;
 }
 
 /* styling of the numbers & operators */
