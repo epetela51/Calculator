@@ -7,25 +7,33 @@
 
 /* container for the main body for the entire calculator */
 #calcContainer {
-    border: 5px solid red;
     padding: 5px;
     width: 275px;
     margin-top: 50px;
+    border-radius: 8px;
+    /* midnight blue from apples new M2 macbook air */
+    background-color: rgb(25,25,112);
+}
+
+/* this has to go above the individual selectors so individual styling takes precedence */
+#outputScreenContainer, #numberAndOperatorBtnsMainContainer {
+    border-radius: 4px;
+    margin: 5px;
+    padding: 5px;
 }
 
 /* container for the screen of the calculator that displays the numbers/equations */
 #outputScreenContainer {
-    border: 5px solid black;
-    padding: 5px;
-    margin: 5px;
     height: 50px;
+    background-color: white;
+    margin-top: 10px;
 }
 
 /* container that holds all the numbers & btns */
 #numberAndOperatorBtnsMainContainer {
-    border: 5px solid purple;
-    padding: 5px;
-    margin: 5px;
+    /* matches the color of the apple logo */
+    background-color: rgb(148,148,148);
+    margin-top: 12px;
 }
 
 #deleteClearAndDivideBtns {
@@ -54,7 +62,25 @@
 
 /* styling of the numbers & operators */
 #numberAndOperatorOutput {
-    color: red;
     font-weight: bold;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+button {
+    border-radius: 4px;
+    transition-duration: 0.2s;
+}
+
+button:hover {
+    /* matches color of calculator background on hover */
+    background-color: rgb(25,25,112);
+    color: white;
+}
+
+/* apple logo */
+img {
+    width: 40px;
+    height: 10x;
+    display: block;
+    margin: 5px auto;
 }
