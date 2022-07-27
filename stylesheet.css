@@ -40,7 +40,8 @@
 
 #deleteClearAndDivideBtns {
     display: grid;
-    grid-template-columns: repeat(3, auto);
+    /* can't use repeat as I need the divide button to be a little wider to match the width of the other operators in the column */
+    grid-template-columns: auto auto 55px;
     column-gap: 15px;
 }
 
