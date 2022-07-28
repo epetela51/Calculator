@@ -25,9 +25,19 @@
 
 /* container for the screen of the calculator that displays the numbers/equations */
 #outputScreenContainer {
-    height: 50px;
+    height: 80px;
     background-color: white;
     margin-top: 10px;
+}
+
+/* styling of the numbers & operators */
+#numberAndOperatorOutput {
+    margin: 0;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    /* used for wrapping text for very long numbers */
+    word-break: break-all;
 }
 
 /* container that holds all the numbers & btns */
@@ -61,12 +71,6 @@
 /* used to have the button sit in the last column */
 #equalsBtn {
     grid-column: 4;
-}
-
-/* styling of the numbers & operators */
-#numberAndOperatorOutput {
-    font-weight: bold;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 button {
