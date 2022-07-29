@@ -36,6 +36,7 @@ let outputScreenContainer = document.querySelector('#outputScreenContainer')
 let numberAndOperatorOutput = document.querySelector('#numberAndOperatorOutput')
 
 // used to re-size the numbers & operators clicked if they are to big for the window
+// this is a display/UI related function
 function resizeToFitWindow() {
     let fontSize = window.getComputedStyle(numberAndOperatorOutput).fontSize;
     numberAndOperatorOutput.style.fontSize = (parseInt(fontSize) - 1) + 'px';
@@ -124,12 +125,16 @@ document.addEventListener('keydown', (e) => {
     // use isFinite method instead of isNaN to check if it's an integer/number
     if (isFinite(e.key)) {
         numberBtnClicked(e.key)
+        setFontSize()
     } else if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
         operatorBtnClicked(e.key)
+        setFontSize()
     } else if (e.key === 'Enter') {
         equalBtnClicked(e.key)
+        setFontSize()
     } else if (e.key === 'Backspace') {
         deleteBtnClicked(e.key)
+        setFontSize()
     } else if (e.key === 'Escape') {
         clearBtnClicked()
     } else {
@@ -312,7 +317,6 @@ function clearBtnClicked() {
 
 clearBtn.addEventListener('click', (e) => {
     clearBtnClicked()
-
 })
 
 function deleteBtnClicked(e) {
