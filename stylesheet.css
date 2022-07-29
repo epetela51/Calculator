@@ -28,12 +28,12 @@
     height: 80px;
     background-color: white;
     margin-top: 10px;
+    font-size: 30px;
 }
 
 /* styling of the numbers & operators */
 #numberAndOperatorOutput {
     margin: 0;
-    font-size: 30px;
     font-weight: bold;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     /* used for wrapping text for very long numbers */

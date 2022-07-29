@@ -1,63 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="stylesheet.css">
+        <link rel="stylesheet" href="stylesheet.css">
 
-    <title>Calculator</title>
-</head>
-<body>
+        <title>Calculator</title>
+    </head>
+    <body>
 
-<div id="mainContainer">
+        <div id="mainContainer">
 
-    <div id="calcContainer">
+            <div id="calcContainer">
 
-        <img src="/image/AppleLogo.png" alt="Apple Logo">
+                <img src="/image/AppleLogo.png" alt="Apple Logo">
 
-        <div id="outputScreenContainer">
-            <p id="numberAndOperatorOutput">
-                <span id="numberOne"></span> <span id="operatorChosen"></span> <span id="numberTwo"></span> <span id="total"></span>
-            </p>
+                <div id="outputScreenContainer">
+                    <p id="numberAndOperatorOutput">
+                        <span id="numberOne"></span> <span id="operatorChosen"></span> <span id="numberTwo"></span> <span id="total"></span>
+                    </p>
+                </div>
+
+                <div id="numberAndOperatorBtnsMainContainer">
+                    
+                    <div id="deleteClearAndDivideBtns">
+                        <!-- clear button -->
+                        <button id="clearBtn">Clear</button> 
+                        <!-- delete button -->
+                        <button id="deleteBtn">Delete</button>
+                        <button data-operators>/</button> 
+                    </div>
+                    
+                    <div id="numbersAndOperatorsBtns">
+                        <!-- Buttons 0 - 9 -->
+                        <button data-number>7</button>
+                        <button data-number>8</button>
+                        <button data-number>9</button>
+                        <!-- <button data-operators>/</button>  -->
+                        <button data-operators>*</button>
+
+                        <button data-number>4</button>
+                        <button data-number>5</button>
+                        <button data-number>6</button>
+                        <button data-operators>-</button>
+
+                        <button data-number>1</button>
+                        <button data-number>2</button>
+                        <button data-number>3</button>
+                        <button data-operators>+</button>
+
+                        <button id="zeroBtn" data-number>0</button>
+                        <button id="equalsBtn">=</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div id="numberAndOperatorBtnsMainContainer">
-            
-            <div id="deleteClearAndDivideBtns">
-                <!-- clear button -->
-                <button id="clearBtn">Clear</button> 
-                <!-- delete button -->
-                <button id="deleteBtn">Delete</button>
-                <button data-operators>/</button> 
-            </div>
-            
-            <div id="numbersAndOperatorsBtns">
-                <!-- Buttons 0 - 9 -->
-                <button data-number>7</button>
-                <button data-number>8</button>
-                <button data-number>9</button>
-                <!-- <button data-operators>/</button>  -->
-                <button data-operators>*</button>
+        <script src="script.js"></script>
 
-                <button data-number>4</button>
-                <button data-number>5</button>
-                <button data-number>6</button>
-                <button data-operators>-</button>
-
-                <button data-number>1</button>
-                <button data-number>2</button>
-                <button data-number>3</button>
-                <button data-operators>+</button>
-
-                <button id="zeroBtn" data-number>0</button>
-                <button id="equalsBtn">=</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-    <script src="script.js"></script>
-</body>
+    </body>
 </html>

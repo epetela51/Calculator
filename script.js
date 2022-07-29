@@ -30,6 +30,28 @@ let displayNumberTwo = document.querySelector('#numberTwo')
 let displayOperator = document.querySelector('#operatorChosen')
 let displayTotal = document.querySelector('#total')
 
+
+// calculator screen
+let outputScreenContainer = document.querySelector('#outputScreenContainer')
+let numberAndOperatorOutput = document.querySelector('#numberAndOperatorOutput')
+
+// used to re-size the numbers & operators clicked if they are to big for the window
+function resizeToFitWindow() {
+    let fontSize = window.getComputedStyle(numberAndOperatorOutput).fontSize;
+    numberAndOperatorOutput.style.fontSize = (parseInt(fontSize) - 1) + 'px';
+    
+    if(numberAndOperatorOutput.clientHeight >= outputScreenContainer.clientHeight){
+        resizeToFitWindow();
+    }
+  }
+
+function setFontSize() {
+    numberAndOperatorOutput.style.fontSize = '100px'
+    resizeToFitWindow()
+}
+
+
+
 function assignOperators() {
 
     lastOperator = operatorArray[operatorArray.length-1]
@@ -146,6 +168,7 @@ function numberBtnClicked(e) {
 numberBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         numberBtnClicked(e.target.innerText)
+        setFontSize()
     })
 })
 
@@ -200,6 +223,7 @@ function operatorBtnClicked(e) {
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         operatorBtnClicked(e.target.innerText)
+        setFontSize()
     })
 })
 
@@ -260,6 +284,7 @@ function equalBtnClicked(e) {
 
 equalsBtn.addEventListener('click', (e) => {
     equalBtnClicked(e.target.innerText)
+    setFontSize()
 })
 
 function clearBtnClicked() {
@@ -337,6 +362,7 @@ function deleteBtnClicked(e) {
 
 deleteBtn.addEventListener('click', (e) => {
     deleteBtnClicked(e.target.innerText)
+    setFontSize()
 })
 
 function add(num1, num2) {
