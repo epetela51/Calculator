@@ -28,7 +28,7 @@
     height: 80px;
     background-color: white;
     margin-top: 10px;
-    font-size: 30px;
+    font-size: 50px; /* this is NOT needed as font size is set in JS but this is kept here as a backup */
 }
 
 /* styling of the numbers & operators */

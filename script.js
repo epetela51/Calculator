@@ -31,7 +31,7 @@ let displayOperator = document.querySelector('#operatorChosen')
 let displayTotal = document.querySelector('#total')
 
 
-// calculator screen
+// calculator screen UI
 let outputScreenContainer = document.querySelector('#outputScreenContainer')
 let numberAndOperatorOutput = document.querySelector('#numberAndOperatorOutput')
 
@@ -46,12 +46,17 @@ function resizeToFitWindow() {
     }
   }
 
+// used to set the font size each time the button is clicked
+// this is needed because every time a btn is clicked it re-sets it back to the default large font size which allows it to shrink down to fit into the window
+// if you move the style.fontSize aspect up into resizeToFitWindow() then each time the button is clicked it will continue to shrink.  This is because on the btn click it is shrinking the prior size
+// i.e. Starts at 100px > shrinks down to 99px
+// without this function on next click it starts at 99px and shrinks down to 98px
+// WITH this function it starts at 100px > shrinks down to 99px and on next btn click it starts at 100px again and shrinks back down to 99px
+// IMPORTANT NOTE: use 100px as a default size but this is NOT what it will be, this is what it starts at and shrinks down to the size that best fits the window
 function setFontSize() {
-    numberAndOperatorOutput.style.fontSize = '100px'
+    numberAndOperatorOutput.style.fontSize = '50px'
     resizeToFitWindow()
 }
-
-
 
 function assignOperators() {
 
