@@ -30,6 +30,34 @@ let displayNumberTwo = document.querySelector('#numberTwo')
 let displayOperator = document.querySelector('#operatorChosen')
 let displayTotal = document.querySelector('#total')
 
+
+// calculator screen UI
+let outputScreenContainer = document.querySelector('#outputScreenContainer')
+let numberAndOperatorOutput = document.querySelector('#numberAndOperatorOutput')
+
+// used to re-size the numbers & operators clicked if they are to big for the window
+// this is a display/UI related function
+function resizeToFitWindow() {
+    let fontSize = window.getComputedStyle(numberAndOperatorOutput).fontSize;
+    numberAndOperatorOutput.style.fontSize = (parseInt(fontSize) - 1) + 'px';
+    
+    if(numberAndOperatorOutput.clientHeight >= outputScreenContainer.clientHeight){
+        resizeToFitWindow();
+    }
+  }
+
+// used to set the font size each time the button is clicked
+// this is needed because every time a btn is clicked it re-sets it back to the default large font size which allows it to shrink down to fit into the window
+// if you move the style.fontSize aspect up into resizeToFitWindow() then each time the button is clicked it will continue to shrink.  This is because on the btn click it is shrinking the prior size
+// i.e. Starts at 100px > shrinks down to 99px
+// without this function on next click it starts at 99px and shrinks down to 98px
+// WITH this function it starts at 100px > shrinks down to 99px and on next btn click it starts at 100px again and shrinks back down to 99px
+// IMPORTANT NOTE: use 100px as a default size but this is NOT what it will be, this is what it starts at and shrinks down to the size that best fits the window
+function setFontSize() {
+    numberAndOperatorOutput.style.fontSize = '50px'
+    resizeToFitWindow()
+}
+
 function assignOperators() {
 
     lastOperator = operatorArray[operatorArray.length-1]
@@ -102,12 +130,16 @@ document.addEventListener('keydown', (e) => {
     // use isFinite method instead of isNaN to check if it's an integer/number
     if (isFinite(e.key)) {
         numberBtnClicked(e.key)
+        setFontSize()
     } else if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
         operatorBtnClicked(e.key)
+        setFontSize()
     } else if (e.key === 'Enter') {
         equalBtnClicked(e.key)
+        setFontSize()
     } else if (e.key === 'Backspace') {
         deleteBtnClicked(e.key)
+        setFontSize()
     } else if (e.key === 'Escape') {
         clearBtnClicked()
     } else {
@@ -146,6 +178,7 @@ function numberBtnClicked(e) {
 numberBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         numberBtnClicked(e.target.innerText)
+        setFontSize()
     })
 })
 
@@ -200,6 +233,7 @@ function operatorBtnClicked(e) {
 operatorBtns.forEach((button) => {
     button.addEventListener('click', (e) => {
         operatorBtnClicked(e.target.innerText)
+        setFontSize()
     })
 })
 
@@ -260,6 +294,7 @@ function equalBtnClicked(e) {
 
 equalsBtn.addEventListener('click', (e) => {
     equalBtnClicked(e.target.innerText)
+    setFontSize()
 })
 
 function clearBtnClicked() {
@@ -287,7 +322,6 @@ function clearBtnClicked() {
 
 clearBtn.addEventListener('click', (e) => {
     clearBtnClicked()
-
 })
 
 function deleteBtnClicked(e) {
@@ -337,6 +371,7 @@ function deleteBtnClicked(e) {
 
 deleteBtn.addEventListener('click', (e) => {
     deleteBtnClicked(e.target.innerText)
+    setFontSize()
 })
 
 function add(num1, num2) {
