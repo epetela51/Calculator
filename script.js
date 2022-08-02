@@ -271,9 +271,15 @@ function equalBtnClicked(e) {
     // click =
     // 5+2 = 7
     else if (secondToLastOperator == '=' || secondToLastOperator == 'Enter') {
-        displayNumberOne.textContent = `${previousTotal}`
-        displayOperator.textContent = `${lastOperatorThatIsNotEqualOrDelete}`
-        displayTotal.textContent = `= ${total}`
+        // used when dividing by 0 and then clicking enter on keyboard (= btn is disabled so do not need to worry about that)
+        // this prevents an output of 0/=0
+        if(lastOperator == 'Enter' && number2 == 0 && lastOperatorThatIsNotEqualOrDelete == '/') {
+            return
+        } else {
+            displayNumberOne.textContent = `${previousTotal}`
+            displayOperator.textContent = `${lastOperatorThatIsNotEqualOrDelete}`
+            displayTotal.textContent = `= ${total}`
+        }
     }
     // used for scenarios of 1+2-=
     else if (secondToLastOperator == '-' || secondToLastOperator == '+' || secondToLastOperator == '/' || secondToLastOperator == '*') {
@@ -367,6 +373,11 @@ function deleteBtnClicked(e) {
         // clear the operator array so on next operator click undefined is passed as the operator which will NOT perform math until either = or another operator is clicked
         operatorArray = []
     }
+
+    // used in case tried to divide by 0 to get error and click delete it re-enables all operator btns and equals btn
+    operatorBtns.forEach((button) => {button.disabled = false})
+    equalsBtn.disabled = false;
+
 }
 
 deleteBtn.addEventListener('click', (e) => {
