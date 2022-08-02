@@ -35,6 +35,46 @@ let displayTotal = document.querySelector('#total')
 let outputScreenContainer = document.querySelector('#outputScreenContainer')
 let numberAndOperatorOutput = document.querySelector('#numberAndOperatorOutput')
 
+// used to change the background color of btns pressed using the keyboard
+function changeBtnColorsOnKeyDown (keyPressed) {
+
+    let key = keyPressed
+
+    numberBtns.forEach((e) => {
+        if(key == e.innerText) {
+            e.style.backgroundColor = 'rgb(25,25,112)'
+            return
+        }
+    })
+
+    operatorBtns.forEach((e) => {
+        if(key == e.innerText) {
+            e.style.backgroundColor = 'rgb(25,25,112)'
+            return
+        }
+    })
+
+    if (key == 'Enter') {
+        equalsBtn.style.backgroundColor = 'rgb(25,25,112)'
+        return
+    } else if (key == 'Backspace') {
+        deleteBtn.style.backgroundColor = 'rgb(25,25,112)'
+        return
+    } else if (key == 'Escape') {
+        clearBtn.style.backgroundColor = 'rgb(25,25,112)'
+        return
+    }
+}
+
+// used to reset the background color of btns on keyup from keyboard
+function resetBtnColorsOnKeyUp () {
+    numberBtns.forEach((button) => {button.style.backgroundColor = '', button.style.color = '' });
+    operatorBtns.forEach((button) => {button.style.backgroundColor = '', button.style.color = '' })
+    equalsBtn.style.backgroundColor = '', color ='';
+    deleteBtn.style.backgroundColor = '', color ='';
+    clearBtn.style.backgroundColor = '', color ='';
+}
+
 // used to re-size the numbers & operators clicked if they are to big for the window
 // this is a display/UI related function
 function resizeToFitWindow() {
@@ -131,17 +171,43 @@ document.addEventListener('keydown', (e) => {
     if (isFinite(e.key)) {
         numberBtnClicked(e.key)
         setFontSize()
+        // used to change the color of the btn on screen on key down
+        changeBtnColorsOnKeyDown(e.key)
     } else if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
         operatorBtnClicked(e.key)
         setFontSize()
+        changeBtnColorsOnKeyDown(e.key)
     } else if (e.key === 'Enter') {
         equalBtnClicked(e.key)
         setFontSize()
+        changeBtnColorsOnKeyDown(e.key)
     } else if (e.key === 'Backspace') {
         deleteBtnClicked(e.key)
         setFontSize()
+        changeBtnColorsOnKeyDown(e.key)
     } else if (e.key === 'Escape') {
         clearBtnClicked()
+        changeBtnColorsOnKeyDown(e.key)
+    } else {
+        console.log('ERROR: INVALID KEY')
+        return
+    }
+
+})
+
+// used only to reset the style of btns on screen on the key up from keyboard
+document.addEventListener('keyup', (e) => {
+
+    if (isFinite(e.key)) {
+        resetBtnColorsOnKeyUp()
+    } else if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
+        resetBtnColorsOnKeyUp()
+    } else if (e.key === 'Enter') {
+        resetBtnColorsOnKeyUp()
+    } else if (e.key === 'Backspace') {
+        resetBtnColorsOnKeyUp()
+    } else if (e.key === 'Escape') {
+        resetBtnColorsOnKeyUp()
     } else {
         console.log('ERROR: INVALID KEY')
         return
