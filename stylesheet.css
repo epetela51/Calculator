@@ -37,8 +37,7 @@
     font-weight: bold;
     font-family: 'Roboto', sans-serif;
     text-align: right;
-    /* used for wrapping text for very long numbers */
-    word-wrap: break-word;
+    word-wrap: break-word; /* used for wrapping text for very long numbers */
 }
 
 /* container that holds all the numbers & btns */
@@ -94,4 +93,13 @@ img {
     height: 10x;
     display: block;
     margin: 5px auto;
+}
+
+#bottomTitle {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 0;
 }
