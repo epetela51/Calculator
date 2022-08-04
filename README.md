@@ -20,3 +20,7 @@ There are two ways you can test this calculator out:
  2.  You can click [here](https://epetela51.github.io/Calculator/) to open the calculator in the current browser
 
 Once you have the calculator open use it like you would any other calculator by doing a variety of calculations including but not limited to individual calculations or long continuous strings for calculations (i.e. 1+2-3*4 = ).
+
+## Contributing to project
+
+If anyone finds any bugs or issues while operating the calculator and has a fix or solution please feel free to open a pull request.  Thanks in advance!
